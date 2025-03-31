@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head th:replace="~{fragments/links :: headContent('')}"></head>
+<title>Criar Projeto - EasyProjects</title>
+
+<body class="bg-light">
+<div th:replace="~{fragments/navbar :: navbar}" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"></div>
+
+<div class="container mt-5 pt-4">
+  <div class="mt-5">
+    <div class="text-start mb-3">
+      <span class="text-muted"><a href="/projetos/lista" style="text-decoration: underline; color: black">< Voltar</a></span>
+      <h1>Novo Projeto</h1>
+    </div>
+    <hr>
+  </div>
+
+    <div class="mb-3">
+      <label for="nomeProjeto" class="form-label">Nome do Projeto</label>
+      <input type="text" id="nomeProjeto" name="nomeProjeto" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="descricaoProjeto" class="form-label">Descrição</label>
+      <textarea id="descricaoProjeto" name="descricaoProjeto" class="form-control" rows="3" required></textarea>
+    </div>
+
+    <div class="mb-3 form-check">
+      <input type="checkbox" id="iniciado" name="iniciado" class="form-check-input">
+      <label for="iniciado" class="form-check-label">Projeto Iniciado</label>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="dataInicio" class="form-label">Data de Início</label>
+        <input type="date" id="dataInicio" name="dataInicio" class="form-control" required>
+        <span class="text-muted" style="font-size: 0.8rem" id="text-data-inicio">Marque o projeto como iniciado para liberar este campo.</span>
+      </div>
+      <div class="col-md-6">
+        <label for="dataFim" class="form-label">Previsão de Finalização</label>
+        <input type="date" id="dataFim" name="dataFim" class="form-control" required>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="status" class="form-label">Status</label>
+      <select id="status" name="status" class="form-select" required>
+        <option value="Pendente">Pendente</option>
+        <option value="Em andamento">Em andamento</option>
+        <option value="Concluído">Concluído</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="prioridade" class="form-label">Prioridade</label>
+      <select id="prioridade" name="prioridade" class="form-select" required>
+        <option value="Baixa">Baixa</option>
+        <option value="Média">Média</option>
+        <option value="Alta">Alta</option>
+      </select>
+    </div>
+
+    <div class="text-end">
+      <button onclick="criar()" class="btn btn-primary">Salvar</button>
+      <a href="/projetos/lista" class="btn btn-secondary">Cancelar</a>
+    </div>
+</div>
+
+<div th:replace="~{fragments/scripts :: scriptsContent('/assets/js/projetos.js')}"></div>
+</body>
+</html>
