@@ -1,0 +1,12 @@
+package com.easyproject.ogl.services;
+
+import com.easyproject.ogl.model.User;
+import com.easyproject.ogl.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+    @Autowired
+    private UserRepository userRepository;
+}

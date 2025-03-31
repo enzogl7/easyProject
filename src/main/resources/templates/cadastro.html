@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head th:replace="~{fragments/links :: headContent('')}"></head>
+<title>Cadastro - EasyProjects</title>
+<body class="d-flex justify-content-center align-items-center vh-100">
+<div class="card p-4 shadow-lg rounded-4" style="width: 450px; background: #ffffff; border: none;">
+    <h3 class="text-center mb-3 text-primary">Cadastro - EasyProjects</h3>
+        <div class="mb-3">
+            <label for="nomeCadastro" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="nomeCadastro" placeholder="Digite seu nome" required>
+        </div>
+        <div class="mb-3">
+            <label for="sobrenomeCadastro" class="form-label">Sobrenome</label>
+            <input type="text" class="form-control" id="sobrenomeCadastro" placeholder="Digite seu sobrenome" required>
+        </div>
+        <div class="mb-3">
+            <label for="emailCadastro" class="form-label">E-mail</label>
+            <input type="email" class="form-control" id="emailCadastro" placeholder="Digite seu melhor e-mail" required>
+        </div>
+        <div class="mb-3">
+            <label for="passwordCadastro" class="form-label">Senha</label>
+            <input type="password" class="form-control" id="passwordCadastro" placeholder="Digite sua senha" required>
+        </div>
+        <button onclick="cadastrar()" class="btn btn-primary w-100 rounded-pill">Cadastrar</button>
+        <hr>
+    <span class="text-muted text-center">Já possui uma conta? <a href="/login">Entrar</a></span>
+</div>
+<div th:replace="~{fragments/scripts :: scriptsContent('/assets/js/login.js')}"></div>
+</body>
+</html>

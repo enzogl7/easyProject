@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head th:replace="~{fragments/links :: headContent('')}"></head>
+<title>Login - EasyProjects</title>
+<body class="d-flex justify-content-center align-items-center vh-100" style="background-color: #f8f9fa;">
+<div class="card p-4 shadow-lg rounded-4" style="width: 450px; background: #ffffff; border: none;">
+  <h3 class="text-center mb-3 text-primary">Login - EasyProjects</h3>
+    <div class="mb-3">
+      <label for="email" class="form-label">E-mail</label>
+      <input type="email" class="form-control" id="email" placeholder="Digite seu e-mail" required>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Senha</label>
+      <input type="password" class="form-control" id="password" placeholder="Digite sua senha" required>
+    </div>
+    <button onclick="logar()" class="btn btn-primary w-100 rounded-pill">Entrar</button>
+    <hr>
+  <span class="text-muted d-block text-center">Ainda não possui uma conta? <a href="/cadastro" class="text-primary">Registre-se</a></span>
+</div>
+<div th:replace="~{fragments/scripts :: scriptsContent('/assets/js/login.js')}"></div>
+</body>
+</html>
