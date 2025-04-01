@@ -20,4 +20,12 @@ public class ClienteService {
     public List<Cliente> findAllByUsuario(User usuario) {
         return clienteRepository.findAllByUsuario(usuario);
     }
+
+    public Cliente findById(Long idCliente) {
+        return clienteRepository.findById(idCliente);
+    }
+
+    public void excluir(Cliente cliente) {
+        clienteRepository.delete(cliente);
+    }
 }

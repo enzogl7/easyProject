@@ -2,6 +2,7 @@ package com.easyproject.ogl.controller;
 
 import com.easyproject.ogl.dto.ProjetoDTO;
 import com.easyproject.ogl.model.Projeto;
+import com.easyproject.ogl.services.ClienteService;
 import com.easyproject.ogl.services.ProjetoService;
 import com.easyproject.ogl.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +25,19 @@ public class ProjetosController {
     private ProjetoService projetoService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ClienteService clienteService;
 
     @RequestMapping("/lista")
     public String projetosHome(Model model) {
         model.addAttribute("projetos", projetoService.findAllByUsuario(userService.getUsuarioLogado()));
+        model.addAttribute("clientes", clienteService.findAllByUsuario(userService.getUsuarioLogado()));
         return "/projetos/projetos";
     }
 
     @RequestMapping("/novo")
     public String novoProjeto(Model model) {
+        model.addAttribute("clientes", clienteService.findAllByUsuario(userService.getUsuarioLogado()));
         return "/projetos/novoProjeto";
     }
 
@@ -48,6 +53,7 @@ public class ProjetosController {
             projeto.setDataInicio(LocalDate.parse(projetoData.dataInicio()));
         }
         projeto.setPrevisaoFim(LocalDate.parse(projetoData.dataFim()));
+        projeto.setCliente(clienteService.findById(Long.valueOf(projetoData.cliente())));
         projeto.setStatus(projetoData.status());
         projeto.setPrioridade(projetoData.prioridade());
         projeto.setUsuario(userService.getUsuarioLogado());

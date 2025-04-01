@@ -33,9 +33,10 @@
       <tbody>
       <tr th:each="cliente : ${clientes}">
         <td class="text-center" th:text="${cliente.nome}"></td>
-        <td class="text-center" th:text="${cliente.descricao}"></td>
+        <td class="text-center" th:text="${cliente.descricao} != '' ? ${cliente.descricao} : '---'"></td>
         <td class="text-center">
-          <button class="btn btn-warning btn-sm">Editar</button>
+          <button th:data-id="${cliente.id}" th:data-nome="${cliente.nome}" th:data-descricao="${cliente.descricao}"
+                  onclick="modalEditarCliente(this)" class="btn btn-warning btn-sm">Editar</button>
           <button th:data-id="${cliente.id}" onclick="excluirCliente(this)" class="btn btn-danger btn-sm">Excluir</button>
         </td>
       </tr>
@@ -43,7 +44,7 @@
     </table>
   </div>
 </div>
-
+<div th:replace="~{/clientes/modal_editar_cliente}"></div>
 <div th:replace="~{fragments/scripts :: scriptsContent('/assets/js/clientes.js')}"></div>
 </body>
 </html>

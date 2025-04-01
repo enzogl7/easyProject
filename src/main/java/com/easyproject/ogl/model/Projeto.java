@@ -25,6 +25,9 @@ public class Projeto {
     private LocalDate dataAlteracao;
     private LocalDate dataInicio;
     private LocalDate previsaoFim;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
     private String status;
     private String prioridade;
     private boolean iniciado;

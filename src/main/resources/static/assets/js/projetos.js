@@ -32,6 +32,7 @@ document.getElementById("statusBusca").addEventListener("change", filtrarTabela)
 document.getElementById("prioridadeBusca").addEventListener("change", filtrarTabela);
 document.getElementById("dataInicioBusca").addEventListener("change", filtrarTabela);
 document.getElementById("dataFimBusca").addEventListener("change", filtrarTabela);
+document.getElementById("clienteBusca").addEventListener("change", filtrarTabela);
 
 document.getElementById("limparFiltros").addEventListener("click", function() {
     document.getElementById("nome").value = "";
@@ -39,6 +40,7 @@ document.getElementById("limparFiltros").addEventListener("click", function() {
     document.getElementById("prioridadeBusca").value = "";
     document.getElementById("dataInicioBusca").value = "";
     document.getElementById("dataFimBusca").value = "";
+    document.getElementById("clienteBusca").value = "";
 
     filtrarTabela();
 });
@@ -48,6 +50,7 @@ function criar() {
     var descricaoProjeto = document.getElementById('descricaoProjeto').value;
     var dataInicio = document.getElementById('dataInicio').value;
     var dataFim = document.getElementById('dataFim').value;
+    var cliente = document.getElementById('cliente').value;
     var status = document.getElementById('status').value;
     var prioridade = document.getElementById('prioridade').value;
     var iniciado = document.getElementById('iniciado').checked;
@@ -81,6 +84,7 @@ function criar() {
             descricaoProjeto: descricaoProjeto,
             dataInicio: dataInicio,
             dataFim: dataFim,
+            cliente: cliente,
             status: status,
             prioridade: prioridade,
             iniciado: iniciado
@@ -200,9 +204,9 @@ function filtrarTabela() {
     var nomeFilter = document.getElementById("nome").value.toLowerCase();
     var statusFilter = document.getElementById("statusBusca").value.toLowerCase();
     var prioridadeFilter = document.getElementById("prioridadeBusca").value.toLowerCase();
+    var clienteFilter = document.getElementById("clienteBusca").value.toLowerCase();
     var dataInicioFilter = formatarData(document.getElementById("dataInicioBusca").value);
     var dataFimFilter = formatarData(document.getElementById("dataFimBusca").value);
-
 
     var table = document.querySelector(".table");
     var rows = table.querySelectorAll("tbody tr");
@@ -213,15 +217,17 @@ function filtrarTabela() {
         var dataInicio = row.querySelector("td:nth-child(5)").textContent.toLowerCase();
         var dataFim = row.querySelector("td:nth-child(6)").textContent.toLowerCase();
         var prioridade = row.querySelector("td:nth-child(7)").textContent.toLowerCase();
+        var cliente = row.querySelector("td:nth-child(8)").textContent.toLowerCase();
 
         var nomeMatch = nome.indexOf(nomeFilter) > -1 || nomeFilter === "";
         var statusMatch = status.indexOf(statusFilter) > -1 || statusFilter === "";
         var dataInicioMatch = dataInicio.indexOf(dataInicioFilter) > -1 || dataInicioFilter === "";
         var dataFimMatch = dataFim.indexOf(dataFimFilter) > -1 || dataFimFilter === "";
         var prioridadeMatch = prioridade.indexOf(prioridadeFilter) > -1 || prioridadeFilter === "";
+        var clienteMatch = cliente.indexOf(clienteFilter) > -1 || clienteFilter === "";
 
 
-        if (nomeMatch && statusMatch && dataInicioMatch && dataFimMatch && prioridadeMatch) {
+        if (nomeMatch && statusMatch && dataInicioMatch && dataFimMatch && prioridadeMatch && clienteMatch) {
             row.style.display = "";
         } else {
             row.style.display = "none";

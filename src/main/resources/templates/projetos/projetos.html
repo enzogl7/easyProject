@@ -16,7 +16,7 @@
     </div>
 
     <div class="row w-100 px-2">
-      <div class="col-md-3 mb-3">
+      <div class="col-md-2 mb-3">
         <label for="nome">Nome</label>
         <input type="text" id="nome" class="form-control" placeholder="Insira o nome do projeto">
       </div>
@@ -42,6 +42,14 @@
       </div>
 
       <div class="col-md-2 mb-3">
+        <label for="clienteBusca">Cliente</label>
+        <select id="clienteBusca" class="form-control">
+          <option value="" selected>Selecione um cliente</option>
+          <option th:each="cliente : ${clientes}" th:text="${cliente.nome}" th:value="${cliente.nome}"></option>
+        </select>
+      </div>
+
+      <div class="col-md-2 mb-3">
         <label for="dataInicioBusca">Data Início</label>
         <input type="date" id="dataInicioBusca" class="form-control">
       </div>
@@ -51,21 +59,23 @@
         <input type="date" id="dataFimBusca" class="form-control">
       </div>
 
+
       <div class="col-md-1 mb-3 d-flex align-items-end">
         <button id="limparFiltros" class="btn btn-secondary w-100">Limpar Filtros</button>
       </div>
     </div>
 
     <table class="table table-bordered table-striped table-hover w-100" id="tabelaProjetos">
-      <thead class="">
+      <thead>
       <tr>
         <th class="text-center">Iniciado</th>
         <th class="text-center">Nome</th>
-        <th class="text-center">Descrição</th>
+        <th class="text-center" style="width: 30%;">Descrição</th>
         <th class="text-center">Status</th>
         <th class="text-center">Data início</th>
-        <th class="text-center">Data prev. finalização</th>
+        <th class="text-center" style="width: 10%;">Data prev. finalização</th>
         <th class="text-center">Prioridade</th>
+        <th class="text-center">Cliente</th>
         <th class="text-center">Ações</th>
       </tr>
       </thead>
@@ -81,17 +91,14 @@
         <td class="text-center" th:text="${projeto.dataInicio != null ? #temporals.format(projeto.dataInicio, 'dd/MM/yyyy') : '---'}"></td>
         <td class="text-center">
           <span th:text="${projeto.previsaoFim != null ? #temporals.format(projeto.previsaoFim, 'dd/MM/yyyy') : '---'}"></span>
-          <span th:if="${projeto.previsaoFim != null and projeto.previsaoFim.isBefore(#temporals.createNow().toLocalDate())}"
-                class="badge bg-warning ms-2">
-    Atrasado
-  </span>
+          <span th:if="${projeto.previsaoFim != null and projeto.previsaoFim.isBefore(#temporals.createNow().toLocalDate())}" class="badge bg-warning ms-2">Atrasado</span>
         </td>
-
         <td class="text-center">
           <span th:if="${projeto.prioridade.toLowerCase() == 'baixa'}" class="badge bg-secondary">Baixa</span>
           <span th:if="${projeto.prioridade.toLowerCase() == 'média'}" class="badge bg-primary">Média</span>
           <span th:if="${projeto.prioridade.toLowerCase() == 'alta'}" class="badge bg-danger">Alta</span>
         </td>
+        <td class="text-center" th:text="${projeto.cliente.nome}"></td>
         <td class="text-center">
           <button th:if="${!projeto.iniciado}" th:data-id="${projeto.id}" onclick="iniciarProjeto(this)" class="btn btn-success btn-sm">Iniciar Projeto</button>
           <button class="btn btn-warning btn-sm">Editar</button>
