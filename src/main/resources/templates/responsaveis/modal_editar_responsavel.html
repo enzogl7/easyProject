@@ -1,0 +1,23 @@
+<div class="modal fade" id="modalEditarResponsavel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editarResponsavelTitle">Editar responsável</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="idResponsavelEdicao">
+
+        <div class="mb-3">
+          <label for="nomeResponsavelEdicao" class="form-label">Nome</label>
+          <input type="text" id="nomeResponsavelEdicao" name="nomeResponsavelEdicao" class="form-control" required>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" onclick="salvarEdicaoResponsavel()">Salvar edições</button>
+      </div>
+    </div>
+  </div>
+</div>
