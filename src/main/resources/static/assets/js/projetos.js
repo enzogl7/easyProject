@@ -45,12 +45,13 @@ document.getElementById("limparFiltros").addEventListener("click", function() {
     filtrarTabela();
 });
 
-function criar() {
+function criarProjeto() {
     var nomeProjeto = document.getElementById('nomeProjeto').value;
     var descricaoProjeto = document.getElementById('descricaoProjeto').value;
     var dataInicio = document.getElementById('dataInicio').value;
     var dataFim = document.getElementById('dataFim').value;
     var cliente = document.getElementById('cliente').value;
+    var responsavel = document.getElementById('responsavelProjeto').value;
     var status = document.getElementById('status').value;
     var prioridade = document.getElementById('prioridade').value;
     var iniciado = document.getElementById('iniciado').checked;
@@ -85,6 +86,7 @@ function criar() {
             dataInicio: dataInicio,
             dataFim: dataFim,
             cliente: cliente,
+            responsavel: responsavel,
             status: status,
             prioridade: prioridade,
             iniciado: iniciado

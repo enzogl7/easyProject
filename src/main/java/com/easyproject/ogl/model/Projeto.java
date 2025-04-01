@@ -34,4 +34,7 @@ public class Projeto {
     @ManyToOne
     @JoinColumn(name = "usuario", nullable = false)
     private User usuario;
+    @ManyToOne
+    @JoinColumn(name = "responsavel")
+    private Responsavel responsavel;
 }

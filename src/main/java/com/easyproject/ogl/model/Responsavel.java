@@ -20,8 +20,7 @@ public class Responsavel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    @OneToMany
-    @JoinColumn(name = "projetos")
+    @OneToMany(mappedBy = "responsavel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Projeto> projetos;
     @ManyToOne
     private User usuario;
