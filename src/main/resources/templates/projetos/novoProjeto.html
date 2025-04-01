@@ -52,6 +52,7 @@
   <div class="mb-3">
     <label for="responsavelProjeto" class="form-label">Responsável</label>
     <select id="responsavelProjeto" name="responsavelProjeto" class="form-select" required>
+      <option value="" selected>Não atribuído</option>
       <option th:each="responsavel : ${responsaveis}"
               th:value="${responsavel.id}" th:text="${responsavel.nome}"></option>
     </select>
@@ -74,6 +75,11 @@
         <option value="Média">Média</option>
         <option value="Alta">Alta</option>
       </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="anexos" class="form-label">Anexos</label>
+      <input type="file" id="anexos" name="anexos" class="form-control" multiple>
     </div>
 
     <div class="text-end">

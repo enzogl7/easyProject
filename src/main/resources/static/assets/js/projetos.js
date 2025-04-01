@@ -33,6 +33,8 @@ document.getElementById("prioridadeBusca").addEventListener("change", filtrarTab
 document.getElementById("dataInicioBusca").addEventListener("change", filtrarTabela);
 document.getElementById("dataFimBusca").addEventListener("change", filtrarTabela);
 document.getElementById("clienteBusca").addEventListener("change", filtrarTabela);
+document.getElementById("responsavelBusca").addEventListener("change", filtrarTabela);
+document.getElementById("iniciadoBusca").addEventListener("change", filtrarTabela);
 
 document.getElementById("limparFiltros").addEventListener("click", function() {
     document.getElementById("nome").value = "";
@@ -41,35 +43,45 @@ document.getElementById("limparFiltros").addEventListener("click", function() {
     document.getElementById("dataInicioBusca").value = "";
     document.getElementById("dataFimBusca").value = "";
     document.getElementById("clienteBusca").value = "";
+    document.getElementById("responsavelBusca").value = "";
+    document.getElementById("iniciadoBusca").value = "";
 
     filtrarTabela();
 });
 
 function criarProjeto() {
-    var nomeProjeto = document.getElementById('nomeProjeto').value;
-    var descricaoProjeto = document.getElementById('descricaoProjeto').value;
-    var dataInicio = document.getElementById('dataInicio').value;
-    var dataFim = document.getElementById('dataFim').value;
-    var cliente = document.getElementById('cliente').value;
-    var responsavel = document.getElementById('responsavelProjeto').value;
-    var status = document.getElementById('status').value;
-    var prioridade = document.getElementById('prioridade').value;
-    var iniciado = document.getElementById('iniciado').checked;
+    var formData = new FormData();
+    formData.append("nomeProjeto", document.getElementById('nomeProjeto').value);
+    formData.append("descricaoProjeto", document.getElementById('descricaoProjeto').value);
+    formData.append("dataInicio", document.getElementById('dataInicio').value);
+    formData.append("dataFim", document.getElementById('dataFim').value);
+    formData.append("cliente", document.getElementById('cliente').value);
+    formData.append("responsavel", document.getElementById('responsavelProjeto').value);
+    formData.append("status", document.getElementById('status').value);
+    formData.append("prioridade", document.getElementById('prioridade').value);
+    formData.append("iniciado", document.getElementById('iniciado').checked);
 
-    if (!nomeProjeto || !descricaoProjeto || !dataFim || !status || !prioridade) {
+    var anexos = document.getElementById('anexos').files;
+    for (var i = 0; i < anexos.length; i++) {
+        formData.append("anexos", anexos[i]);
+    }
+
+    console.log(document.getElementById('responsavelProjeto').value);
+
+    if (!formData.get("nomeProjeto") || !formData.get("descricaoProjeto") || !formData.get("dataFim") || !formData.get("status") || !formData.get("prioridade")) {
         Swal.fire({
             title: "Ops!",
-            text: "Preencha todos os campos!",
+            text: "Preencha todos os campos obrigatórios!",
             icon: "warning",
             confirmButtonText: 'OK'
         });
         return;
     }
 
-    if (iniciado && !dataInicio) {
+    if (formData.get("iniciado") === "true" && !formData.get("dataInicio")) {
         Swal.fire({
             title: "Ops!",
-            text: "Preencha todos os campos!",
+            text: "Preencha a data de início!",
             icon: "warning",
             confirmButtonText: 'OK'
         });
@@ -79,19 +91,10 @@ function criarProjeto() {
     $.ajax({
         url: '/projetos/criar',
         type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({
-            nomeProjeto: nomeProjeto,
-            descricaoProjeto: descricaoProjeto,
-            dataInicio: dataInicio,
-            dataFim: dataFim,
-            cliente: cliente,
-            responsavel: responsavel,
-            status: status,
-            prioridade: prioridade,
-            iniciado: iniciado
-        }),
-        success: function() {
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function () {
             Swal.fire({
                 title: "Sucesso!",
                 text: "Projeto criado com sucesso.",
@@ -101,10 +104,10 @@ function criarProjeto() {
                 window.location.href = "/projetos/lista";
             });
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             Swal.fire({
                 title: "Ops!",
-                text: "Ocorreu um erro ao criar projeto.",
+                text: "Ocorreu um erro ao criar o projeto.",
                 icon: "error",
                 confirmButtonText: "OK"
             });
@@ -207,6 +210,8 @@ function filtrarTabela() {
     var statusFilter = document.getElementById("statusBusca").value.toLowerCase();
     var prioridadeFilter = document.getElementById("prioridadeBusca").value.toLowerCase();
     var clienteFilter = document.getElementById("clienteBusca").value.toLowerCase();
+    var responsavelFilter = document.getElementById("responsavelBusca").value.toLowerCase();
+    var iniciadoFilter = document.getElementById("iniciadoBusca").value.toLowerCase();
     var dataInicioFilter = formatarData(document.getElementById("dataInicioBusca").value);
     var dataFimFilter = formatarData(document.getElementById("dataFimBusca").value);
 
@@ -214,22 +219,27 @@ function filtrarTabela() {
     var rows = table.querySelectorAll("tbody tr");
 
     rows.forEach(function(row) {
+        var iniciado = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
         var nome = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
         var status = row.querySelector("td:nth-child(4)").textContent.toLowerCase();
         var dataInicio = row.querySelector("td:nth-child(5)").textContent.toLowerCase();
         var dataFim = row.querySelector("td:nth-child(6)").textContent.toLowerCase();
-        var prioridade = row.querySelector("td:nth-child(7)").textContent.toLowerCase();
-        var cliente = row.querySelector("td:nth-child(8)").textContent.toLowerCase();
+        var cliente = row.querySelector("td:nth-child(7)").textContent.toLowerCase();
+        var responsavel = row.querySelector("td:nth-child(8)").textContent.toLowerCase();
+        var prioridade = row.querySelector("td:nth-child(9)").textContent.toLowerCase();
 
+
+        var iniciadoMatch = iniciado.indexOf(iniciadoFilter) > -1 || iniciadoFilter === "";
         var nomeMatch = nome.indexOf(nomeFilter) > -1 || nomeFilter === "";
         var statusMatch = status.indexOf(statusFilter) > -1 || statusFilter === "";
         var dataInicioMatch = dataInicio.indexOf(dataInicioFilter) > -1 || dataInicioFilter === "";
         var dataFimMatch = dataFim.indexOf(dataFimFilter) > -1 || dataFimFilter === "";
-        var prioridadeMatch = prioridade.indexOf(prioridadeFilter) > -1 || prioridadeFilter === "";
         var clienteMatch = cliente.indexOf(clienteFilter) > -1 || clienteFilter === "";
+        var responsavelMatch = responsavel.indexOf(responsavelFilter) > -1 || responsavelFilter === "";
+        var prioridadeMatch = prioridade.indexOf(prioridadeFilter) > -1 || prioridadeFilter === "";
 
 
-        if (nomeMatch && statusMatch && dataInicioMatch && dataFimMatch && prioridadeMatch && clienteMatch) {
+        if (iniciadoMatch && nomeMatch && statusMatch && dataInicioMatch && dataFimMatch && responsavelMatch && clienteMatch && prioridadeMatch) {
             row.style.display = "";
         } else {
             row.style.display = "none";
