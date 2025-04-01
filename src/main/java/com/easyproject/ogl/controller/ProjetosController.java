@@ -1,5 +1,6 @@
 package com.easyproject.ogl.controller;
 
+import com.easyproject.ogl.dto.EdicaoProjetoDTO;
 import com.easyproject.ogl.dto.ProjetoDTO;
 import com.easyproject.ogl.model.Cliente;
 import com.easyproject.ogl.model.Projeto;
@@ -152,5 +153,28 @@ public class ProjetosController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + anexo.getNomeArquivo() + "\"")
                 .body(recurso);
+    }
+
+    @PostMapping("/editar")
+    public ResponseEntity editarProjeto(@RequestBody EdicaoProjetoDTO edicaoProjetoDTO) {
+        try {
+            Projeto projeto = projetoService.findById(Long.valueOf(edicaoProjetoDTO.idProjeto()));
+            if (edicaoProjetoDTO.iniciadoProjeto()) {
+                projeto.setIniciado(true);
+                projeto.setDataInicio(LocalDate.parse(edicaoProjetoDTO.dataInicioProjeto()));
+            }
+            projeto.setNome(edicaoProjetoDTO.nomeProjeto());
+            projeto.setDescricao(edicaoProjetoDTO.descricaoProjeto());
+            projeto.setStatus(edicaoProjetoDTO.statusProjeto());
+            projeto.setPrioridade(edicaoProjetoDTO.prioridadeProjeto());
+            projeto.setResponsavel(responsavelService.findById(Long.valueOf(edicaoProjetoDTO.responsavelProjeto())));
+            projeto.setCliente(clienteService.findById(Long.valueOf(edicaoProjetoDTO.clienteProjeto())));
+            projeto.setPrevisaoFim(LocalDate.parse(edicaoProjetoDTO.previsaoFimProjeto()));
+            projetoService.salvar(projeto);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

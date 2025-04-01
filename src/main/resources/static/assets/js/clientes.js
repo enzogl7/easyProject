@@ -61,23 +61,29 @@ function excluirCliente(button) {
                 data: {
                     idCliente: idCliente
                 },
-                success: function() {
-                    Swal.fire({
-                        title: "Sucesso!",
-                        text: "Cliente excluído com sucesso.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        location.reload();
-                    });
-                },
-                error: function(xhr, status, error) {
-                    Swal.fire({
-                        title: "Ops!",
-                        text: "Ocorreu um erro ao excluir cliente.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    });
+                complete: function(xhr, status) {
+                    switch (xhr.status) {
+                        case 200:
+                            Swal.fire({
+                                title: "Pronto!",
+                                text: "Excluído com sucesso!",
+                                icon: "success",
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                location.reload();
+                            });
+                            break;
+                        case 304:
+                            Swal.fire({
+                                title: "Ops!",
+                                text: "Não foi possível excluir este cliente pois o mesmo possui projetos atribuídos à ele.",
+                                icon: "warning",
+                                confirmButtonText: 'OK'
+                            })
+                            break;
+                        default:
+                            alert("Erro desconhecido: " + status);
+                    }
                 }
             });
         }

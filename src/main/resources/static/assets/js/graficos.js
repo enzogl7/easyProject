@@ -1,7 +1,53 @@
+let graficosRemovidos = [];
+
+function removerGrafico(id) {
+    document.getElementById(id).style.display = "none";
+
+    let nomeGrafico = document.querySelector(`#${id} .card-header`).innerText.trim();
+    graficosRemovidos.push({ id, nome: nomeGrafico });
+
+    atualizarDropdown();
+}
+
+function atualizarDropdown() {
+    let dropdown = document.getElementById("restoreList");
+    let restoreContainer = document.getElementById("restoreContainer");
+
+    dropdown.innerHTML = "";
+
+    if (graficosRemovidos.length > 0) {
+        restoreContainer.style.display = "block";
+
+        graficosRemovidos.forEach((grafico, index) => {
+            let item = document.createElement("li");
+            let link = document.createElement("a");
+            link.classList.add("dropdown-item");
+            link.href = "#";
+            link.innerText = grafico.nome;
+            link.onclick = function () {
+                restaurarGrafico(index);
+            };
+
+            item.appendChild(link);
+            dropdown.appendChild(item);
+        });
+    } else {
+        restoreContainer.style.display = "none";
+    }
+}
+
+function restaurarGrafico(index) {
+    let grafico = graficosRemovidos[index];
+
+    document.getElementById(grafico.id).style.display = "block";
+    graficosRemovidos.splice(index, 1);
+
+    atualizarDropdown();
+}
+
 fetch("/obterdados")
     .then(response => response.json())
     .then(data => {
-
         const ctx = document.getElementById("graficoProxFinalizacao").getContext("2d");
         const totalProjetos = data.projetosTotal;
 
@@ -11,31 +57,26 @@ fetch("/obterdados")
         }
 
         const hoje = new Date();
-        const projetosDentro7Dias = totalProjetos.filter(projeto => {
+
+        const projetosNoPrazo = totalProjetos.filter(projeto => {
             const previsaoFim = new Date(projeto.previsaoFim);
-            const diferencaDias = (previsaoFim - hoje) / (1000 * 60 * 60 * 24);
-            return diferencaDias > 0 && diferencaDias <= 7;
+            return previsaoFim >= hoje;
         }).length;
 
         const projetosAtrasados = totalProjetos.filter(projeto => {
             const previsaoFim = new Date(projeto.previsaoFim);
-            return previsaoFim < hoje;
+            const diferencaDias = (hoje - previsaoFim) / (1000 * 60 * 60 * 24);
+            return diferencaDias > 7;
         }).length;
-
-        const projetosFora7Dias = totalProjetos.length - (projetosDentro7Dias + projetosAtrasados);
 
         new Chart(ctx, {
             type: "pie",
             data: {
-                labels: [
-                    "Próximos da data de previsão de finalização",
-                    "Mais de 7 dias da data de previsão de finalização",
-                    "Atrasados"
-                ],
+                labels: ["Projetos Dentro do Prazo", "Projetos Atrasados (+7 dias)"],
                 datasets: [{
-                    data: [projetosDentro7Dias, projetosFora7Dias, projetosAtrasados],
-                    backgroundColor: ["#FF6384", "#36A2EB", "#FFC107"], // Amarelo para atrasados
-                    borderColor: ["#FF6384", "#36A2EB", "#FFC107"],
+                    data: [projetosNoPrazo, projetosAtrasados],
+                    backgroundColor: ["#36A2EB", "#FF6384"],
+                    borderColor: ["#36A2EB", "#FF6384"],
                     borderWidth: 1
                 }]
             },
@@ -137,7 +178,7 @@ fetch("/obterdados")
             'Baixa': '#C1C1C1'
 
         };
-        
+
         const labels = Object.keys(prioridadeCounts);
         const dataValues = Object.values(prioridadeCounts);
         const backgroundColors = labels.map(prioridade => prioridadeColors[prioridade] || '#C1C1C1');

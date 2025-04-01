@@ -5,6 +5,7 @@ import com.easyproject.ogl.services.ProjetoService;
 import com.easyproject.ogl.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -21,7 +22,11 @@ public class GraficosController {
     private UserService userService;
 
     @GetMapping("/graficos")
-    public String graficosPage() {
+    public String graficosPage(Model model) {
+        model.addAttribute("nao_atribuidos", projetoService.countProjetosNaoAtribuidosByUsuario(userService.getUsuarioLogado().getId()));
+        model.addAttribute("em_andamento", projetoService.countProjetosEmAndamentoByUsuario(userService.getUsuarioLogado().getId()));
+        model.addAttribute("em_atraso", projetoService.getProjetosProximosDataFinalizacao(userService.getUsuarioLogado().getId()));
+        model.addAttribute("concluidos", projetoService.countProjetosConcluidosByUsuario(userService.getUsuarioLogado().getId()));
         return "/graficos/graficos";
     }
 

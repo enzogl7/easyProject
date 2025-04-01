@@ -106,23 +106,29 @@ function excluirResponsavel(button) {
                 data: {
                     idResponsavel: idResponsavel
                 },
-                success: function() {
-                    Swal.fire({
-                        title: "Sucesso!",
-                        text: "Responsável excluído com sucesso.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        location.reload();
-                    });
-                },
-                error: function(xhr, status, error) {
-                    Swal.fire({
-                        title: "Ops!",
-                        text: "Ocorreu um erro ao excluir responsável.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    });
+                complete: function(xhr, status) {
+                    switch (xhr.status) {
+                        case 200:
+                            Swal.fire({
+                                title: "Pronto!",
+                                text: "Excluído com sucesso!",
+                                icon: "success",
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                location.reload();
+                            });
+                            break;
+                        case 304:
+                            Swal.fire({
+                                title: "Ops!",
+                                text: "Não foi possível excluir este responsável pois o mesmo possui projetos atribuídos à ele.",
+                                icon: "warning",
+                                confirmButtonText: 'OK'
+                            })
+                            break;
+                        default:
+                            alert("Erro desconhecido: " + status);
+                    }
                 }
             });
         }

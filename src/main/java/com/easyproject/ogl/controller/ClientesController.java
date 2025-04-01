@@ -3,9 +3,12 @@ package com.easyproject.ogl.controller;
 import com.easyproject.ogl.dto.ClienteDTO;
 import com.easyproject.ogl.dto.EdicaoClienteDTO;
 import com.easyproject.ogl.model.Cliente;
+import com.easyproject.ogl.model.Projeto;
 import com.easyproject.ogl.services.ClienteService;
+import com.easyproject.ogl.services.ProjetoService;
 import com.easyproject.ogl.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 @Controller
 public class ClientesController {
@@ -22,6 +27,8 @@ public class ClientesController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private ProjetoService projetoService;
 
     @RequestMapping("/clientes")
     public String clientesHome(Model model) {
@@ -52,6 +59,11 @@ public class ClientesController {
     public ResponseEntity excluirCliente(@RequestParam("idCliente") String idCliente) {
         try {
             Cliente cliente = clienteService.findById(Long.valueOf(idCliente));
+            List<Projeto> projetosCliente = projetoService.findAllByCliente(cliente.getId());
+            if (projetosCliente.size() > 0) {
+                return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+            }
+
             clienteService.excluir(cliente);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
@@ -71,6 +83,5 @@ public class ClientesController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
-
     }
 }

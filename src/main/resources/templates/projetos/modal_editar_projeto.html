@@ -1,0 +1,79 @@
+<div class="modal fade" id="modalEditarProjeto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editarProjetoTitle">Editar cliente</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="idProjetoEdicao">
+
+                <div class="mb-3">
+                    <label for="nomeProjetoEdicao" class="form-label">Nome do Projeto</label>
+                    <input type="text" id="nomeProjetoEdicao" name="nomeProjetoEdicaoEdicao" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="descricaoProjetoEdicao" class="form-label">Descrição</label>
+                    <textarea id="descricaoProjetoEdicao" name="descricaoProjetoEdicao" class="form-control" rows="3" required></textarea>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" id="iniciadoEdicao" name="iniciadoEdicao" class="form-check-input">
+                    <label for="iniciadoEdicao" class="form-check-label">Projeto Iniciado</label>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="dataInicioEdicao" class="form-label">Data de Início</label>
+                        <input type="date" id="dataInicioEdicao" name="dataInicioEdicao" class="form-control" required>
+                        <span class="text-muted" style="font-size: 0.8rem" id="text-data-inicio-edicao">Marque o projeto como iniciado para liberar este campo.</span>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="dataFimEdicao" class="form-label">Previsão de Finalização</label>
+                        <input type="date" id="dataFimEdicao" name="dataFimEdicao" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="clienteEdicaoProjeto" class="form-label">Cliente</label>
+                    <select id="clienteEdicaoProjeto" name="clienteEdicaoProjeto" class="form-select" required>
+                        <option th:each="cliente : ${clientes}"
+                                th:value="${cliente.id}" th:text="${cliente.nome}"></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="responsavelProjetoEdicao" class="form-label">Responsável</label>
+                    <select id="responsavelProjetoEdicao" name="responsavelProjetoEdicao" class="form-select" required>
+                        <option value="" selected>Não atribuído</option>
+                        <option th:each="responsavel : ${responsaveis}"
+                                th:value="${responsavel.id}" th:text="${responsavel.nome}"></option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="statusEdicaoProjeto" class="form-label">Status</label>
+                    <select id="statusEdicaoProjeto" name="statusEdicaoProjeto" class="form-select" required>
+                        <option value="Pendente">Pendente</option>
+                        <option value="Em andamento">Em andamento</option>
+                        <option value="Concluído">Concluído</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="prioridadeEdicao" class="form-label">Prioridade</label>
+                    <select id="prioridadeEdicao" name="prioridadeEdicao" class="form-select" required>
+                        <option value="Baixa">Baixa</option>
+                        <option value="Média">Média</option>
+                        <option value="Alta">Alta</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="salvarEdicaoProjeto()">Salvar edições</button>
+            </div>
+        </div>
+    </div>
+</div>

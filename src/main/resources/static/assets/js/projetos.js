@@ -66,8 +66,6 @@ function criarProjeto() {
         formData.append("anexos", anexos[i]);
     }
 
-    console.log(document.getElementById('responsavelProjeto').value);
-
     if (!formData.get("nomeProjeto") || !formData.get("descricaoProjeto") || !formData.get("dataFim") || !formData.get("status") || !formData.get("prioridade")) {
         Swal.fire({
             title: "Ops!",
@@ -243,6 +241,114 @@ function filtrarTabela() {
             row.style.display = "";
         } else {
             row.style.display = "none";
+        }
+    });
+}
+
+function modalEditarProjeto(button) {
+    var hoje = new Date().toISOString().split('T')[0];
+
+    var idProjeto = button.getAttribute('data-id');
+    var iniciado = button.getAttribute('data-iniciado');
+    var nome = button.getAttribute('data-nome');
+    var descricao = button.getAttribute('data-descricao');
+    var status = button.getAttribute('data-status');
+    var dataInicio = button.getAttribute('data-inicio');
+    var previsaoFim = button.getAttribute('data-fim');
+    var clienteEdicaoProjeto = button.getAttribute('data-cliente');
+    var responsavel = button.getAttribute('data-responsavel');
+    var prioridade = button.getAttribute('data-prioridade');
+    $('#modalEditarProjeto').modal('show');
+
+    document.getElementById('idProjetoEdicao').value = idProjeto;
+    document.getElementById('nomeProjetoEdicao').value = nome;
+    document.getElementById('descricaoProjetoEdicao').value = descricao;
+    document.getElementById('statusEdicaoProjeto').value = status;
+    document.getElementById('prioridadeEdicao').value = prioridade;
+    document.getElementById('responsavelProjetoEdicao').value = responsavel ? responsavel : "";
+    document.getElementById('clienteEdicaoProjeto').value = clienteEdicaoProjeto;
+    document.getElementById('dataInicioEdicao').value = dataInicio;
+    document.getElementById('dataFimEdicao').value = previsaoFim;
+
+    document.getElementById('iniciadoEdicao').addEventListener("change", function () {
+        if (this.checked) {
+            document.getElementById('dataInicioEdicao').disabled = false;
+            document.getElementById('dataInicioEdicao').value = hoje;
+            document.getElementById('text-data-inicio-edicao').hidden = true;
+        } else {
+            document.getElementById('dataInicioEdicao').disabled = true;
+            document.getElementById('dataInicioEdicao').value = "";
+            document.getElementById('text-data-inicio-edicao').hidden = false;
+        }
+    });
+
+    if (iniciado === "true") {
+        document.getElementById('iniciadoEdicao').checked = true;
+        document.getElementById('dataInicioEdicao').disabled = false;
+        document.getElementById('text-data-inicio-edicao').style.display = 'none';
+    } else {
+        document.getElementById('iniciadoEdicao').checked = false;
+        document.getElementById('dataInicioEdicao').disabled = true;
+        document.getElementById('dataInicioEdicao').val("");
+        document.getElementById('text-data-inicio-edicao').style.display = 'block';
+    }
+}
+
+function salvarEdicaoProjeto() {
+    var iniciadoProjeto = document.getElementById('iniciadoEdicao').checked;
+    var idProjeto = document.getElementById('idProjetoEdicao').value;
+    var nome = document.getElementById('nomeProjetoEdicao').value;
+    var descricao = document.getElementById('descricaoProjetoEdicao').value;
+    var status = document.getElementById('statusEdicaoProjeto').value;
+    var prioridade = document.getElementById('prioridadeEdicao').value;
+    var responsavel = document.getElementById('responsavelProjetoEdicao').value;
+    var clienteEdicaoProjeto = document.getElementById('clienteEdicaoProjeto').value;
+    var dataInicio = document.getElementById('dataInicioEdicao').value;
+    var previsaoFim = document.getElementById('dataFimEdicao').value;
+
+    if (!nome || !descricao || !status || !prioridade || !responsavel || !clienteEdicaoProjeto || !previsaoFim) {
+        Swal.fire({
+            title: "Ops!",
+            text: "Preencha todos os campos!",
+            icon: "warning",
+            confirmButtonText: 'OK'
+        })
+        return;
+    }
+
+    $.ajax({
+        url: '/projetos/editar',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            idProjeto: idProjeto,
+            nomeProjeto: nome,
+            descricaoProjeto: descricao,
+            statusProjeto: status,
+            prioridadeProjeto: prioridade,
+            responsavelProjeto: responsavel,
+            clienteProjeto: clienteEdicaoProjeto,
+            dataInicioProjeto: dataInicio,
+            previsaoFimProjeto: previsaoFim,
+            iniciadoProjeto: iniciadoProjeto,
+        }),
+        success: function() {
+            Swal.fire({
+                title: "Sucesso!",
+                text: "Projeto editado com sucesso.",
+                icon: "success",
+                confirmButtonText: "OK"
+            }).then(() => {
+                location.reload();
+            });
+        },
+        error: function(xhr, status, error) {
+            Swal.fire({
+                title: "Ops!",
+                text: "Ocorreu um erro ao editar o projeto.",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
         }
     });
 }
