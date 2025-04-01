@@ -79,7 +79,14 @@
         <td class="text-center" th:text="${projeto.descricao}"></td>
         <td class="text-center" th:text="${projeto.status}"></td>
         <td class="text-center" th:text="${projeto.dataInicio != null ? #temporals.format(projeto.dataInicio, 'dd/MM/yyyy') : '---'}"></td>
-        <td class="text-center" th:text="${projeto.previsaoFim != null ? #temporals.format(projeto.previsaoFim, 'dd/MM/yyyy') : '---'}"></td>
+        <td class="text-center">
+          <span th:text="${projeto.previsaoFim != null ? #temporals.format(projeto.previsaoFim, 'dd/MM/yyyy') : '---'}"></span>
+          <span th:if="${projeto.previsaoFim != null and projeto.previsaoFim.isBefore(#temporals.createNow().toLocalDate())}"
+                class="badge bg-warning ms-2">
+    Atrasado
+  </span>
+        </td>
+
         <td class="text-center">
           <span th:if="${projeto.prioridade.toLowerCase() == 'baixa'}" class="badge bg-secondary">Baixa</span>
           <span th:if="${projeto.prioridade.toLowerCase() == 'média'}" class="badge bg-primary">Média</span>

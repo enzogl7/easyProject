@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head th:replace="~{fragments/links :: headContent('')}"></head>
+<title>Novo Cliente - EasyProjects</title>
+
+<body class="bg-light">
+<div th:replace="~{fragments/navbar :: navbar}" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"></div>
+
+<div class="container mt-5 pt-4">
+  <div class="mt-5">
+    <div class="text-start mb-3">
+      <span class="text-muted"><a href="/clientes/clientes" style="text-decoration: underline; color: black">< Voltar</a></span>
+      <h1>Novo Cliente</h1>
+    </div>
+    <hr>
+  </div>
+
+  <div class="mb-3">
+    <label for="nomeCliente" class="form-label">Nome</label>
+    <input type="text" id="nomeCliente" name="nomeCliente" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="descricaoCliente" class="form-label">Descrição</label>
+    <textarea id="descricaoCliente" name="descricaoCliente" class="form-control" rows="3" required></textarea>
+  </div>
+
+  <div class="text-end">
+    <button onclick="criarCliente()" class="btn btn-primary">Salvar</button>
+    <a href="/clientes/clientes" class="btn btn-secondary">Cancelar</a>
+  </div>
+</div>
+
+<div th:replace="~{fragments/scripts :: scriptsContent('/assets/js/clientes.js')}"></div>
+</body>
+</html>

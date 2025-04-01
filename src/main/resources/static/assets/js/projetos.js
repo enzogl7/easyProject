@@ -2,15 +2,10 @@ $(document).ready(function () {
     paginacaoTabela('tabelaProjetos')
 });
 
-document.getElementById("nome").addEventListener("keyup", filtrarTabela);
-document.getElementById("statusBusca").addEventListener("change", filtrarTabela);
-document.getElementById("prioridadeBusca").addEventListener("change", filtrarTabela);
-document.getElementById("dataInicioBusca").addEventListener("change", filtrarTabela);
-document.getElementById("dataFimBusca").addEventListener("change", filtrarTabela);
-
 document.addEventListener("DOMContentLoaded", function () {
     var hoje = new Date().toISOString().split('T')[0];
     document.getElementById("dataFim").value = hoje;
+    console.log("RODOU")
 
     const checkboxIniciado = document.getElementById("iniciado");
     const inputDataInicio = document.getElementById("dataInicio");
@@ -31,6 +26,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+document.getElementById("nome").addEventListener("keyup", filtrarTabela);
+document.getElementById("statusBusca").addEventListener("change", filtrarTabela);
+document.getElementById("prioridadeBusca").addEventListener("change", filtrarTabela);
+document.getElementById("dataInicioBusca").addEventListener("change", filtrarTabela);
+document.getElementById("dataFimBusca").addEventListener("change", filtrarTabela);
 
 document.getElementById("limparFiltros").addEventListener("click", function() {
     document.getElementById("nome").value = "";
