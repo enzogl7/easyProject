@@ -7,6 +7,7 @@ function removerGrafico(id) {
     graficosRemovidos.push({ id, nome: nomeGrafico });
 
     atualizarDropdown();
+    verificarCards();
 }
 
 function atualizarDropdown() {
@@ -43,7 +44,19 @@ function restaurarGrafico(index) {
     graficosRemovidos.splice(index, 1);
 
     atualizarDropdown();
+    verificarCards();
 }
+
+function verificarCards() {
+    let cardsVisiveis = document.querySelectorAll(".grafico-card:not([style*='display: none'])");
+    let mensagemSemProjetos = document.getElementById("mensagemSemProjetos");
+    if (cardsVisiveis.length === 0) {
+        mensagemSemProjetos.style.display = "block";
+    } else {
+        mensagemSemProjetos.style.display = "none";
+    }
+}
+
 
 fetch("/obterdados")
     .then(response => response.json())
@@ -53,6 +66,8 @@ fetch("/obterdados")
 
         if (!totalProjetos || totalProjetos.length === 0) {
             console.error("Nenhum projeto encontrado");
+            $('#cardProxFinalizacao').hide()
+            verificarCards();
             return;
         }
 
@@ -102,6 +117,8 @@ fetch("/obterdados")
 
         if (!totalProjetos || totalProjetos.length === 0) {
             console.error("Nenhum projeto encontrado");
+            $('#cardStatus').hide()
+            verificarCards();
             return;
         }
 
@@ -163,6 +180,8 @@ fetch("/obterdados")
 
         if (!totalProjetos || totalProjetos.length === 0) {
             console.error("Nenhum projeto encontrado");
+            $('#cardPrioridade').hide()
+            verificarCards();
             return;
         }
 
@@ -224,6 +243,7 @@ fetch("/subtarefas/obterDados")
         if (!totalSubtarefas || totalSubtarefas.length === 0) {
             console.error("Nenhuma subtarefa encontrada");
             $('#cardSubtarefas').hide()
+            verificarCards();
             return;
         }
 

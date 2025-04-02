@@ -69,7 +69,7 @@ public class LoginController {
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(dataRegister.password());
         String nome = dataRegister.nome() + " " + dataRegister.sobrenome();
-        User newUser = new User(nome, dataRegister.email(), encryptedPassword, dataRegister.role());
+        User newUser = new User(nome, dataRegister.email(), encryptedPassword, dataRegister.organizacao(), dataRegister.role());
 
         userRepository.save(newUser);
         return ResponseEntity.ok().build();

@@ -27,11 +27,13 @@ public class User implements UserDetails {
     private String email;
     private String senha;
     private UserRole role;
+    private String organizacao;
 
-    public User(String nome, String email, String password, UserRole role) {
+    public User(String nome, String email, String password, String organizacao, UserRole role) {
         this.nome = nome;
         this.email = email;
         this.senha = password;
+        this.organizacao = organizacao;
         this.role = role;
     }
 

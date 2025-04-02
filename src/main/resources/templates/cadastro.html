@@ -23,21 +23,26 @@
 <div class="card p-4 shadow-lg rounded-4" style="width: 450px; background: #ffffff; border: none;">
     <h3 class="text-center mb-3 text-primary">Cadastro - EasyProjects</h3>
         <div class="mb-3">
-            <label for="nomeCadastro" class="form-label">Nome</label>
+            <label for="nomeCadastro" class="form-label">Nome*</label>
             <input type="text" class="form-control" id="nomeCadastro" placeholder="Digite seu nome" required>
         </div>
         <div class="mb-3">
-            <label for="sobrenomeCadastro" class="form-label">Sobrenome</label>
+            <label for="sobrenomeCadastro" class="form-label">Sobrenome*</label>
             <input type="text" class="form-control" id="sobrenomeCadastro" placeholder="Digite seu sobrenome" required>
         </div>
         <div class="mb-3">
-            <label for="emailCadastro" class="form-label">E-mail</label>
+            <label for="emailCadastro" class="form-label">E-mail*</label>
             <input type="email" class="form-control" id="emailCadastro" placeholder="Digite seu melhor e-mail" required>
         </div>
         <div class="mb-3">
-            <label for="passwordCadastro" class="form-label">Senha</label>
+            <label for="passwordCadastro" class="form-label">Senha*</label>
             <input type="password" class="form-control" id="passwordCadastro" placeholder="Digite sua senha" required>
             <div id="mensagemErroSenha" class="mensagem-escondida text-center" style="font-size: 0.8rem"></div>
+        </div>
+        <div class="mb-3">
+            <label for="organizacaoCadastro" class="form-label">Organização</label>
+            <input type="email" class="form-control" id="organizacaoCadastro" placeholder="Digite o nome da sua organização">
+            <span class="text-muted" style="font-size: 0.75rem">O nome da organização será exibido na barra de navegação da aplicação.</span>
         </div>
         <button onclick="cadastrar()" class="btn btn-primary w-100 rounded-pill">Cadastrar</button>
         <hr>

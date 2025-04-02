@@ -53,6 +53,7 @@ function cadastrar() {
     var sobrenomeCadastro = document.getElementById('sobrenomeCadastro').value;
     var emailCadastro = document.getElementById('emailCadastro').value;
     var senhaCadastro = document.getElementById('passwordCadastro').value;
+    var organizacaoCadastro = document.getElementById('organizacaoCadastro').value;
 
     if (!nomeCadastro || !sobrenomeCadastro || !emailCadastro || !senhaCadastro) {
         Swal.fire({
@@ -78,6 +79,7 @@ function cadastrar() {
             sobrenome: sobrenomeCadastro,
             email: emailCadastro,
             password: senhaCadastro,
+            organizacao: organizacaoCadastro,
             role: "USER",
         }),
         complete: function(xhr, status) {
