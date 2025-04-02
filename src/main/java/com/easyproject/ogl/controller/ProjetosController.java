@@ -5,6 +5,7 @@ import com.easyproject.ogl.dto.ProjetoDTO;
 import com.easyproject.ogl.model.*;
 import com.easyproject.ogl.repository.ProjetoAnexoRepository;
 import com.easyproject.ogl.services.*;
+import org.apache.tomcat.util.net.SSLUtilBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -45,6 +46,8 @@ public class ProjetosController {
     private static final String DIRETORIO_UPLOAD = "/uploads/projetos/";
     @Autowired
     private SolicitanteService solicitanteService;
+    @Autowired
+    private SubtarefaService subtarefaService;
 
     @ModelAttribute
     public void adicionarClientesEResponsaveisAoModel(Model model) {
@@ -107,9 +110,18 @@ public class ProjetosController {
 
     @PostMapping("/excluir")
     public ResponseEntity excluirProjeto(@RequestParam("idProjeto") String idProjeto) {
-        Projeto projeto = projetoService.findById(Long.valueOf(idProjeto));
-        projetoService.excluir(projeto);
-        return ResponseEntity.ok().build();
+        try {
+            Projeto projeto = projetoService.findById(Long.valueOf(idProjeto));
+            List<Subtarefa> subtarefasPorProjeto = subtarefaService.findAllByProjetoId(projeto);
+            if (subtarefasPorProjeto.size() > 0) {
+                return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+            }
+            projetoService.excluir(projeto);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     private void salvarAnexosProjeto(Projeto projeto, List<MultipartFile> anexos) throws IOException {

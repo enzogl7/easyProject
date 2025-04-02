@@ -1,5 +1,6 @@
 package com.easyproject.ogl.controller;
 
+import com.easyproject.ogl.dto.EdicaoSubtarefaDTO;
 import com.easyproject.ogl.dto.SubtarefaDTO;
 import com.easyproject.ogl.model.Projeto;
 import com.easyproject.ogl.model.Subtarefa;
@@ -40,6 +41,8 @@ public class SubtarefasController {
 
         model.addAttribute("subtarefasPorProjeto", subtarefasPorProjeto);
         model.addAttribute("projetos", subtarefaService.findAllProjetosByUsuario(userService.getUsuarioLogado().getId()));
+        model.addAttribute("projetosNovo", projetoService.findAllByUsuario(userService.getUsuarioLogado()));
+        model.addAttribute("responsaveis", responsavelService.findAllByUsuario(userService.getUsuarioLogado()));
         return "/subtarefas/subtarefas";
     }
 
@@ -56,7 +59,7 @@ public class SubtarefasController {
 
     @GetMapping("/subtarefas/novo")
     public String novaSubtarefa(Model model) {
-        model.addAttribute("projetos", projetoService.findAllByUsuario(userService.getUsuarioLogado()));
+        model.addAttribute("projetosNovo", projetoService.findAllByUsuario(userService.getUsuarioLogado()));
         model.addAttribute("responsaveis", responsavelService.findAllByUsuario(userService.getUsuarioLogado()));
         return "/subtarefas/nova_subtarefa";
     }
@@ -70,6 +73,7 @@ public class SubtarefasController {
             subtarefa.setDescricao(subtarefaDTO.descricaoSubtarefa());
             subtarefa.setDataEntrega(LocalDate.parse(subtarefaDTO.dataEntregaSubtarefa()));
             subtarefa.setAtribuido(responsavelService.findById(Long.valueOf(subtarefaDTO.atribuidoASubtarefa())));
+            subtarefa.setStatus(subtarefaDTO.statusSubtarefa());
             subtarefa.setUsuario(userService.getUsuarioLogado());
             subtarefaService.salvar(subtarefa);
 
@@ -86,6 +90,26 @@ public class SubtarefasController {
             subtarefaService.excluir(subtarefa);
 
             return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/subtarefas/editar")
+    public ResponseEntity editarSubtarefa(@RequestBody EdicaoSubtarefaDTO edicaoSubtarefaDTO) {
+        try {
+            Subtarefa subtarefa = subtarefaService.findById(Long.valueOf(edicaoSubtarefaDTO.idSubtarefa()));
+            subtarefa.setProjeto(projetoService.findById(Long.valueOf(edicaoSubtarefaDTO.projetoSubtarefa())));
+            subtarefa.setNome(edicaoSubtarefaDTO.nomeSubtarefa());
+            subtarefa.setDescricao(edicaoSubtarefaDTO.descricaoSubtarefa());
+            subtarefa.setDataEntrega(LocalDate.parse(edicaoSubtarefaDTO.dataEntregaSubtarefa()));
+            subtarefa.setAtribuido(responsavelService.findById(Long.valueOf(edicaoSubtarefaDTO.atribuidoASubtarefa())));
+            subtarefa.setStatus(edicaoSubtarefaDTO.statusSubtarefa());
+            subtarefa.setUsuario(userService.getUsuarioLogado());
+            subtarefaService.salvar(subtarefa);
+
+            return ResponseEntity.ok().build();
+
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

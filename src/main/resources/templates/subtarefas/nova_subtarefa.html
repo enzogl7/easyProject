@@ -18,7 +18,7 @@
     <div class="mb-3">
         <label for="selectProjetoSubtarefa" class="form-label">Projeto</label>
         <select class="form-control" id="selectProjetoSubtarefa">
-            <option th:each="projeto : ${projetos}" th:text="${projeto.nome}" th:value="${projeto.id}"></option>
+            <option th:each="projeto : ${projetosNovo}" th:text="${projeto.nome}" th:value="${projeto.id}"></option>
         </select>
     </div>
 
@@ -41,6 +41,15 @@
         <label for="atribuidoASubtarefa" class="form-label">Atribuído à</label>
         <select id="atribuidoASubtarefa" name="atribuidoASubtarefa" class="form-control">
             <option th:each="responsavel : ${responsaveis}" th:text="${responsavel.nome}" th:value="${responsavel.id}"></option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="statusSubtarefa">Status</label>
+        <select id="statusSubtarefa" class="form-control">
+            <option value="Pendente">Pendente</option>
+            <option value="Em andamento">Em andamento</option>
+            <option value="Concluído">Concluído</option>
         </select>
     </div>
 

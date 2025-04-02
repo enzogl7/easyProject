@@ -16,5 +16,5 @@ public interface SubtarefaRepository extends JpaRepository<Subtarefa, Long> {
     List<Projeto> getProjetosByUsuario(@Param("usuarioId") Long usuarioId);
 
 
-
+    List<Subtarefa> findAllByProjeto(Projeto projeto);
 }

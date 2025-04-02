@@ -8,7 +8,6 @@
 <div class="container mt-5 pt-5">
   <h2 class="text-center">Subtarefas</h2>
 
-  <!-- Filtro por Projeto -->
   <div class="row mt-3">
     <div class="col-md-6 offset-md-3">
       <label for="filtroProjeto" class="form-label">Filtrar por Projeto:</label>
@@ -23,6 +22,10 @@
     <a href="/subtarefas/novo" class="btn btn-primary btn-sm" type="button">Criar subtarefa</a>
   </div>
 
+  <div th:if="${#maps.isEmpty(subtarefasPorProjeto)}" class="text-center mt-4">
+    <p class="text-muted">Não existem subtarefas cadastradas.</p>
+  </div>
+
   <div class="row mt-4" id="subtarefasContainer">
     <div th:each="entry : ${subtarefasPorProjeto}" class="col-md-4 mb-4 subtarefa-card" th:data-projeto-id="${entry.key.id}">
       <div class="card">
@@ -35,7 +38,9 @@
               <h5 th:text="${subtarefa.nome}">Nome da Subtarefa</h5>
               <div>
                 <a title="Editar" style="cursor: pointer; text-decoration: none"
-                   th:data-id="${subtarefa.id}" onclick="editarSubtarefa(this)">
+                   th:data-id="${subtarefa.id}" th:data-projeto="${subtarefa.projeto.id}" th:data-nome="${subtarefa.nome}"
+                   th:data-descricao="${subtarefa.descricao}" th:data-data-entrega="${subtarefa.dataEntrega}" th:data-atribuido="${subtarefa.atribuido.id}"
+                   th:data-status="${subtarefa.status}" onclick="modalEditarSubtarefa(this)">
                   <i class="bi bi-pencil text-muted"></i>
                 </a>
                 <a title="Excluir" style="cursor: pointer; text-decoration: none"
@@ -51,6 +56,7 @@
               <span th:if="${subtarefa.dataEntrega.isAfter(#temporals.createNow().toLocalDate()) and subtarefa.dataEntrega.isBefore(#temporals.createNow().toLocalDate().plusDays(3))}" class="badge bg-warning">Próximo</span>
               <span th:if="${subtarefa.dataEntrega.isAfter(#temporals.createNow().toLocalDate().plusDays(2))}" class="badge bg-success">Dentro do prazo</span>
             </p>
+            <p><strong>Status:</strong> <span th:text="${subtarefa.status}"></span></p>
             <p><strong>Atribuído:</strong> <span th:text="${subtarefa.atribuido.nome}"></span></p>
             <hr/>
           </div>
@@ -59,7 +65,7 @@
     </div>
   </div>
 </div>
-
+<div th:replace="~{/subtarefas/modal_editar_subtarefa}"></div>
 <div th:replace="~{fragments/scripts :: scriptsContent('/assets/js/subtarefas.js')}"></div>
 </body>
 </html>

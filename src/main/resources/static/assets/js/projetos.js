@@ -232,23 +232,29 @@ function excluirProjeto(button) {
                 data: {
                     idProjeto: idProjeto
                 },
-                success: function() {
-                    Swal.fire({
-                        title: "Sucesso!",
-                        text: "Projeto excluído com sucesso.",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        location.reload();
-                    });
-                },
-                error: function(xhr, status, error) {
-                    Swal.fire({
-                        title: "Ops!",
-                        text: "Ocorreu um erro ao excluir este projeto.",
-                        icon: "error",
-                        confirmButtonText: "OK"
-                    });
+                complete: function(xhr, status) {
+                    switch (xhr.status) {
+                        case 200:
+                            Swal.fire({
+                                title: "Pronto!",
+                                text: "Excluído com sucesso!",
+                                icon: "success",
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                location.reload();
+                            });
+                            break;
+                        case 304:
+                            Swal.fire({
+                                title: "Ops!",
+                                text: "Não foi possível excluir este projeto pois ele possui subtarefas vinculadas.",
+                                icon: "warning",
+                                confirmButtonText: 'OK'
+                            })
+                            break;
+                        default:
+                            alert("Erro desconhecido: " + status);
+                    }
                 }
             });
         }

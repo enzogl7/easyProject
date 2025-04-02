@@ -28,5 +28,6 @@ public class Subtarefa {
     private Responsavel atribuido;
     @ManyToOne
     private User usuario;
+    private String status;
 
 }

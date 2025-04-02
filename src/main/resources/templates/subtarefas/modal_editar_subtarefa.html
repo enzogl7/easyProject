@@ -1,0 +1,56 @@
+<div class="modal fade" id="modalEditarSubtarefa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editarSubtarefaTitle">Editar responsável</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="idSubtarefaEdicao">
+
+        <div class="mb-3">
+          <label for="projetoSubtarefaEdicao" class="form-label">Projeto</label>
+          <select class="form-control" id="projetoSubtarefaEdicao">
+            <option th:each="projeto : ${projetosNovo}" th:text="${projeto.nome}" th:value="${projeto.id}"></option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="nomeSubtarefaEdicao" class="form-label">Nome</label>
+          <input type="text" id="nomeSubtarefaEdicao" name="nomeSubtarefaEdicao" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="descricaoSubtarefaEdicao" class="form-label">Descrição</label>
+          <input type="text" id="descricaoSubtarefaEdicao" name="descricaoSubtarefaEdicao" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="dataEntregaSubtarefaEdicao" class="form-label">Data de entrega</label>
+          <input type="date" id="dataEntregaSubtarefaEdicao" name="dataEntregaSubtarefaEdicao" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="atribuidoASubtarefaEdicao" class="form-label">Atribuído à</label>
+          <select id="atribuidoASubtarefaEdicao" name="atribuidoASubtarefaEdicao" class="form-control">
+            <option th:each="responsavel : ${responsaveis}" th:text="${responsavel.nome}" th:value="${responsavel.id}"></option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="statusSubtarefaEdicao">Status</label>
+          <select id="statusSubtarefaEdicao" class="form-control">
+            <option value="Pendente">Pendente</option>
+            <option value="Em andamento">Em andamento</option>
+            <option value="Concluído">Concluído</option>
+          </select>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" onclick="salvarEdicaoSubtarefa()">Salvar edições</button>
+      </div>
+    </div>
+  </div>
+</div>

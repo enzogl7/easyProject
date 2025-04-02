@@ -33,4 +33,8 @@ public class SubtarefaService {
     public List<Projeto> findAllProjetosByUsuario(Long usuarioId) {
         return subtarefaRepository.getProjetosByUsuario(usuarioId);
     }
+
+    public List<Subtarefa> findAllByProjetoId(Projeto projeto) {
+        return subtarefaRepository.findAllByProjeto(projeto);
+    }
 }
