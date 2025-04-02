@@ -66,13 +66,13 @@ fetch("/obterdados")
         const projetosAtrasados = totalProjetos.filter(projeto => {
             const previsaoFim = new Date(projeto.previsaoFim);
             const diferencaDias = (hoje - previsaoFim) / (1000 * 60 * 60 * 24);
-            return diferencaDias > 7;
+            return diferencaDias >= 1;
         }).length;
 
         new Chart(ctx, {
             type: "pie",
             data: {
-                labels: ["Projetos Dentro do Prazo", "Projetos Atrasados (+7 dias)"],
+                labels: ["Projetos Dentro do Prazo", "Projetos Atrasados"],
                 datasets: [{
                     data: [projetosNoPrazo, projetosAtrasados],
                     backgroundColor: ["#36A2EB", "#FF6384"],
@@ -192,6 +192,63 @@ fetch("/obterdados")
                     data: dataValues,
                     backgroundColor: backgroundColors,
                     borderColor: backgroundColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: "top",
+                    }
+                }
+            }
+        });
+    })
+    .catch(error => console.error("Erro ao carregar os dados: ", error));
+
+fetch("/subtarefas/obterDados")
+    .then(response => response.json())
+    .then(data => {
+        const ctx = document.getElementById("graficoSubtarefas").getContext("2d");
+        const totalSubtarefas = data.subtarefasTotal;
+
+        if (!totalSubtarefas || totalSubtarefas.length === 0) {
+            console.error("Nenhuma subtarefa encontrada");
+            $('#cardSubtarefas').hide()
+            return;
+        }
+
+        const responsavelCounts = totalSubtarefas.reduce((acc, subtarefa) => {
+            const responsavel = subtarefa.atribuido.nome;
+            acc[responsavel] = (acc[responsavel] || 0) + 1;
+            return acc;
+        }, {});
+
+        const labels = Object.keys(responsavelCounts);
+        const dataValues = Object.values(responsavelCounts);
+
+        const backgroundColors = [
+            "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#C1C1C1"
+        ];
+
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Subtarefas por Responsável",
+                    data: dataValues,
+                    backgroundColor: backgroundColors.slice(0, labels.length),
+                    borderColor: backgroundColors.slice(0, labels.length),
                     borderWidth: 1
                 }]
             },

@@ -1,3 +1,19 @@
+function validarSenha(senha) {
+    var regexSenha = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regexSenha.test(senha);
+}
+
+function exibirMensagemErro(elemento, mensagem) {
+    elemento.textContent = mensagem;
+    elemento.classList.remove('mensagem-escondida');
+    elemento.classList.add('mensagem-visivel');
+
+    setTimeout(function () {
+        elemento.classList.remove('mensagem-visivel');
+        elemento.classList.add('mensagem-escondida');
+    }, 6500);
+}
+
 function logar() {
     var email = document.getElementById('email').value;
     var password = document.getElementById('password').value;
@@ -45,6 +61,11 @@ function cadastrar() {
             icon: "warning",
             confirmButtonText: 'OK'
         })
+        return;
+    }
+
+    if(!validarSenha(senhaCadastro)) {
+        exibirMensagemErro(mensagemErroSenha, 'A senha deve ter no mínimo 8 caracteres, incluindo maiúsculas, minúsculas, números e caracteres especiais.');
         return;
     }
 

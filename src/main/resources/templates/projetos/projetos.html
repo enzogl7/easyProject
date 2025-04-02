@@ -25,7 +25,7 @@
       <div class="col-md-2 mb-3">
         <label for="statusBusca">Status</label>
         <select id="statusBusca" class="form-control">
-          <option value="" selected>Selecione uma opção</option>
+          <option value="" selected>Selecione um status</option>
           <option value="Pendente">Pendente</option>
           <option value="Em andamento">Em andamento</option>
           <option value="Concluído">Concluído</option>
@@ -35,7 +35,7 @@
       <div class="col-md-2 mb-3">
         <label for="prioridadeBusca">Prioridade</label>
         <select id="prioridadeBusca" class="form-control">
-          <option value="" selected>Selecione uma opção</option>
+          <option value="" selected>Selecione uma prioridade</option>
           <option value="Baixa">Baixo</option>
           <option value="Média">Média</option>
           <option value="Alta">Alta</option>
@@ -123,6 +123,7 @@
         <td class="text-center">
           <span th:text="${projeto.previsaoFim != null ? #temporals.format(projeto.previsaoFim, 'dd/MM/yyyy') : '---'}"></span>
           <span th:if="${projeto.previsaoFim != null and projeto.previsaoFim.isBefore(#temporals.createNow().toLocalDate())}" class="badge bg-warning ms-2 badge-atrasado">Atrasado</span>
+          <span th:if="${projeto.previsaoFim != null and projeto.previsaoFim.isEqual(#temporals.createNow().toLocalDate())}" class="badge bg-danger ms-2 badge-hoje">Hoje</span>
         </td>
         <td class="text-center" th:text="${projeto.cliente.nome}"></td>
         <td class="text-center" th:text="${projeto.solicitante?.nome ?: 'Não atribuído'}"></td>

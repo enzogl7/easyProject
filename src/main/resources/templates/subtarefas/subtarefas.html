@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/links :: headContent('')}"></head>
+<title>Subtarefas - EasyProjects</title>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"></div>
+
+<div class="container mt-5 pt-5">
+  <h2 class="text-center">Subtarefas</h2>
+
+  <!-- Filtro por Projeto -->
+  <div class="row mt-3">
+    <div class="col-md-6 offset-md-3">
+      <label for="filtroProjeto" class="form-label">Filtrar por Projeto:</label>
+      <select id="filtroProjeto" class="form-select">
+        <option value="">Todos os Projetos</option>
+        <option th:each="projeto : ${projetos}" th:value="${projeto.id}" th:text="${projeto.nome}"></option>
+      </select>
+    </div>
+  </div>
+
+  <div class="text-center mt-3">
+    <a href="/subtarefas/novo" class="btn btn-primary btn-sm" type="button">Criar subtarefa</a>
+  </div>
+
+  <div class="row mt-4" id="subtarefasContainer">
+    <div th:each="entry : ${subtarefasPorProjeto}" class="col-md-4 mb-4 subtarefa-card" th:data-projeto-id="${entry.key.id}">
+      <div class="card">
+        <div class="card-header text-center">
+          <strong th:text="${entry.key.nome}">Título do Projeto</strong>
+        </div>
+        <div class="card-body">
+          <div th:each="subtarefa : ${entry.value}">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 th:text="${subtarefa.nome}">Nome da Subtarefa</h5>
+              <div>
+                <a title="Editar" style="cursor: pointer; text-decoration: none"
+                   th:data-id="${subtarefa.id}" onclick="editarSubtarefa(this)">
+                  <i class="bi bi-pencil text-muted"></i>
+                </a>
+                <a title="Excluir" style="cursor: pointer; text-decoration: none"
+                   th:data-id="${subtarefa.id}" onclick="excluirSubtarefa(this)">
+                  <i class="bi bi-trash text-muted"></i>
+                </a>
+              </div>
+            </div>
+            <p><strong>Entrega:</strong>
+              <span th:text="${#temporals.format(subtarefa.dataEntrega, 'dd/MM/yyyy')}"></span>
+              <span th:if="${subtarefa.dataEntrega.isEqual(#temporals.createNow().toLocalDate())}" class="badge bg-primary">Hoje</span>
+              <span th:if="${subtarefa.dataEntrega.isBefore(#temporals.createNow().toLocalDate())}" class="badge bg-danger">Atrasado</span>
+              <span th:if="${subtarefa.dataEntrega.isAfter(#temporals.createNow().toLocalDate()) and subtarefa.dataEntrega.isBefore(#temporals.createNow().toLocalDate().plusDays(3))}" class="badge bg-warning">Próximo</span>
+              <span th:if="${subtarefa.dataEntrega.isAfter(#temporals.createNow().toLocalDate().plusDays(2))}" class="badge bg-success">Dentro do prazo</span>
+            </p>
+            <p><strong>Atribuído:</strong> <span th:text="${subtarefa.atribuido.nome}"></span></p>
+            <hr/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div th:replace="~{fragments/scripts :: scriptsContent('/assets/js/subtarefas.js')}"></div>
+</body>
+</html>

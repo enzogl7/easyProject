@@ -171,6 +171,7 @@ public class ProjetosController {
             projeto.setResponsavel(responsavelService.findById(Long.valueOf(edicaoProjetoDTO.responsavelProjeto())));
             projeto.setCliente(clienteService.findById(Long.valueOf(edicaoProjetoDTO.clienteProjeto())));
             projeto.setPrevisaoFim(LocalDate.parse(edicaoProjetoDTO.previsaoFimProjeto()));
+            projeto.setDataAlteracao(LocalDate.now());
             projetoService.salvar(projeto);
             return ResponseEntity.ok().build();
         } catch (Exception e) {

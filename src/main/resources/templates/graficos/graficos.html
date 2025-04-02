@@ -110,7 +110,20 @@
         </div>
       </div>
     </div>
+
+    <div class="col-md-4 mb-4 grafico-card" id="cardSubtarefas">
+      <div class="card">
+        <div class="card-header text-center d-flex justify-content-between align-items-center">
+          <span class="flex-grow-1">Subtarefas por responsáveis</span>
+          <button class="btn-close custom-close" onclick="removerGrafico('cardSubtarefas')"></button>
+        </div>
+        <div class="card-body">
+          <canvas id="graficoSubtarefas" height="250"></canvas>
+        </div>
+      </div>
+    </div>
   </div>
+
 </div>
 <div th:replace="~{fragments/scripts :: scriptsContent('/assets/js/graficos.js')}"></div>
 </body>

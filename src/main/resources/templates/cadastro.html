@@ -2,6 +2,23 @@
 <html lang="pt-br">
 <head th:replace="~{fragments/links :: headContent('')}"></head>
 <title>Cadastro - EasyProjects</title>
+<style>
+    .mensagem-escondida {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+        color: red;
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+    }
+
+    .mensagem-visivel {
+        display: block;
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+        color: red;
+    }
+</style>
 <body class="d-flex justify-content-center align-items-center vh-100">
 <div class="card p-4 shadow-lg rounded-4" style="width: 450px; background: #ffffff; border: none;">
     <h3 class="text-center mb-3 text-primary">Cadastro - EasyProjects</h3>
@@ -20,6 +37,7 @@
         <div class="mb-3">
             <label for="passwordCadastro" class="form-label">Senha</label>
             <input type="password" class="form-control" id="passwordCadastro" placeholder="Digite sua senha" required>
+            <div id="mensagemErroSenha" class="mensagem-escondida text-center" style="font-size: 0.8rem"></div>
         </div>
         <button onclick="cadastrar()" class="btn btn-primary w-100 rounded-pill">Cadastrar</button>
         <hr>
