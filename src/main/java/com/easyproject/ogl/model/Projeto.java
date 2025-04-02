@@ -53,4 +53,8 @@ public class Projeto {
     @OneToMany(mappedBy = "projeto", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<ProjetoAnexo> anexos;
+
+    @ManyToOne
+    @JoinColumn(name = "solicitante")
+    private Solicitante solicitante;
 }

@@ -92,7 +92,8 @@
         <th class="text-center">Data início</th>
         <th class="text-center" style="width: 10%;">Data prev. finalização</th>
         <th class="text-center">Cliente</th>
-        <th class="text-center">Responsável</th>
+        <th class="text-center">Solicitante</th>
+        <th class="text-center">Atribuído à</th>
         <th class="text-center">Prioridade</th>
         <th class="text-center">Anexo</th>
         <th class="text-center">Ações</th>
@@ -114,6 +115,7 @@
           <span th:if="${projeto.previsaoFim != null and projeto.previsaoFim.isBefore(#temporals.createNow().toLocalDate())}" class="badge bg-warning ms-2">Atrasado</span>
         </td>
         <td class="text-center" th:text="${projeto.cliente.nome}"></td>
+        <td class="text-center" th:text="${projeto.solicitante?.nome ?: 'Não atribuído'}"></td>
         <td class="text-center" th:text="${projeto.responsavel?.nome ?: 'Não atribuído'}"></td>
         <td class="text-center">
           <span th:if="${projeto.prioridade.toLowerCase() == 'baixa'}" class="badge bg-secondary">Baixa</span>

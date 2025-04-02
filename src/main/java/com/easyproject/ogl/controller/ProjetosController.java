@@ -2,15 +2,9 @@ package com.easyproject.ogl.controller;
 
 import com.easyproject.ogl.dto.EdicaoProjetoDTO;
 import com.easyproject.ogl.dto.ProjetoDTO;
-import com.easyproject.ogl.model.Cliente;
-import com.easyproject.ogl.model.Projeto;
-import com.easyproject.ogl.model.ProjetoAnexo;
-import com.easyproject.ogl.model.Responsavel;
+import com.easyproject.ogl.model.*;
 import com.easyproject.ogl.repository.ProjetoAnexoRepository;
-import com.easyproject.ogl.services.ClienteService;
-import com.easyproject.ogl.services.ProjetoService;
-import com.easyproject.ogl.services.ResponsavelService;
-import com.easyproject.ogl.services.UserService;
+import com.easyproject.ogl.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -49,16 +43,21 @@ public class ProjetosController {
     @Autowired
     private ProjetoAnexoRepository projetoAnexoRepository;
     private static final String DIRETORIO_UPLOAD = "/uploads/projetos/";
+    @Autowired
+    private SolicitanteService solicitanteService;
 
     @ModelAttribute
     public void adicionarClientesEResponsaveisAoModel(Model model) {
         List<Cliente> clientes = clienteService.findAllByUsuario(userService.getUsuarioLogado());
         List<Responsavel> responsaveis = responsavelService.findAllByUsuario(userService.getUsuarioLogado());
+        List<Solicitante> solicitantes = solicitanteService.findAllByUsuario(userService.getUsuarioLogado());
         clientes.sort(Comparator.comparing(Cliente::getNome, String::compareToIgnoreCase));
         responsaveis.sort(Comparator.comparing(Responsavel::getNome, String::compareToIgnoreCase));
+        solicitantes.sort(Comparator.comparing(Solicitante::getNome, String::compareToIgnoreCase));
 
         model.addAttribute("clientes", clientes);
         model.addAttribute("responsaveis", responsaveis);
+        model.addAttribute("solicitantes", solicitantes);
     }
 
     @RequestMapping("/lista")
@@ -75,6 +74,7 @@ public class ProjetosController {
     @PostMapping(value = "/criar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> criarProjeto(@ModelAttribute ProjetoDTO projetoData) throws IOException {
         Projeto projeto = new Projeto();
+        Solicitante solicitante = solicitanteService.findById(Long.valueOf(projetoData.solicitanteProjeto()));
 
         projeto.setNome(projetoData.nomeProjeto());
         projeto.setDescricao(projetoData.descricaoProjeto());
@@ -84,6 +84,7 @@ public class ProjetosController {
             projeto.setDataInicio(LocalDate.parse(projetoData.dataInicio()));
         }
         projeto.setPrevisaoFim(LocalDate.parse(projetoData.dataFim()));
+        projeto.setSolicitante(solicitante);
         projeto.setCliente(clienteService.findById(Long.valueOf(projetoData.cliente())));
         projeto.setResponsavel((projetoData.responsavel() != null && !projetoData.responsavel().isEmpty()) ?
                 responsavelService.findById(Long.valueOf(projetoData.responsavel())) : null);

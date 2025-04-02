@@ -55,6 +55,7 @@ function criarProjeto() {
     formData.append("descricaoProjeto", document.getElementById('descricaoProjeto').value);
     formData.append("dataInicio", document.getElementById('dataInicio').value);
     formData.append("dataFim", document.getElementById('dataFim').value);
+    formData.append("solicitanteProjeto", document.getElementById('solicitanteProjeto').value);
     formData.append("cliente", document.getElementById('cliente').value);
     formData.append("responsavel", document.getElementById('responsavelProjeto').value);
     formData.append("status", document.getElementById('status').value);
@@ -66,7 +67,7 @@ function criarProjeto() {
         formData.append("anexos", anexos[i]);
     }
 
-    if (!formData.get("nomeProjeto") || !formData.get("descricaoProjeto") || !formData.get("dataFim") || !formData.get("status") || !formData.get("prioridade")) {
+    if (!formData.get("nomeProjeto") || !formData.get("descricaoProjeto") || !formData.get("dataFim") || !formData.get("status") || !formData.get("prioridade") || !formData.get("solicitanteProjeto")) {
         Swal.fire({
             title: "Ops!",
             text: "Preencha todos os campos obrigatórios!",
