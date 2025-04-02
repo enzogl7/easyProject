@@ -35,6 +35,7 @@ document.getElementById("dataFimBusca").addEventListener("change", filtrarTabela
 document.getElementById("clienteBusca").addEventListener("change", filtrarTabela);
 document.getElementById("responsavelBusca").addEventListener("change", filtrarTabela);
 document.getElementById("iniciadoBusca").addEventListener("change", filtrarTabela);
+document.getElementById("solicitanteBusca").addEventListener("change", filtrarTabela);
 
 document.getElementById("limparFiltros").addEventListener("click", function() {
     document.getElementById("nome").value = "";
@@ -45,9 +46,69 @@ document.getElementById("limparFiltros").addEventListener("click", function() {
     document.getElementById("clienteBusca").value = "";
     document.getElementById("responsavelBusca").value = "";
     document.getElementById("iniciadoBusca").value = "";
+    document.getElementById("solicitanteBusca").value = "";
 
     filtrarTabela();
 });
+
+document.getElementById("exportarExcel").addEventListener("click", function () {
+    let tabela = document.getElementById("tabelaProjetos");
+    let wb = XLSX.utils.book_new();
+    let dados = [];
+    let agora = new Date();
+    let dataFormatada = agora.toISOString().split('T')[0];
+    let horarioFormatado = agora.toTimeString().split(' ')[0].replace(/:/g, "-");
+    let nomeArquivo = `projetos_${dataFormatada}_${horarioFormatado}.xlsx`;
+    let indicesIgnorados = [];
+    let cabecalhos = [];
+
+    tabela.querySelectorAll("thead tr th").forEach((th, index) => {
+        let texto = th.innerText.trim().toLowerCase();
+        if (texto === "ações" || texto === "anexo") {
+            indicesIgnorados.push(index);
+        } else {
+            cabecalhos.push(th.innerText.trim());
+        }
+    });
+    dados.push(cabecalhos);
+
+    tabela.querySelectorAll("tbody tr").forEach(tr => {
+        let linha = [];
+        tr.querySelectorAll("td").forEach((td, index) => {
+            if (!indicesIgnorados.includes(index)) {
+                let valor = td.innerText.trim();
+
+                if (cabecalhos[index] === "Iniciado") {
+                    let iconeCheck = td.querySelector(".bi-check-circle-fill");
+                    let iconeX = td.querySelector(".bi-x-circle-fill");
+
+                    if (iconeCheck) {
+                        valor = "Sim";
+                    } else if (iconeX) {
+                        valor = "Não";
+                    } else {
+                        valor = "Não iniciado";
+                    }
+                }
+
+                if (cabecalhos[index] === "Data Prevista") {
+                    let badgeAtrasado = td.querySelector(".badge-atrasado");
+                    if (badgeAtrasado) {
+                        valor += " - Atrasado";
+                    }
+                }
+
+                linha.push(valor);
+            }
+        });
+        dados.push(linha);
+    });
+
+    let ws = XLSX.utils.aoa_to_sheet(dados);
+    XLSX.utils.book_append_sheet(wb, ws, "Projetos");
+    XLSX.writeFile(wb, nomeArquivo);
+});
+
 
 function criarProjeto() {
     var formData = new FormData();
@@ -211,6 +272,7 @@ function filtrarTabela() {
     var clienteFilter = document.getElementById("clienteBusca").value.toLowerCase();
     var responsavelFilter = document.getElementById("responsavelBusca").value.toLowerCase();
     var iniciadoFilter = document.getElementById("iniciadoBusca").value.toLowerCase();
+    var solicitanteFilter = document.getElementById("solicitanteBusca").value.toLowerCase();
     var dataInicioFilter = formatarData(document.getElementById("dataInicioBusca").value);
     var dataFimFilter = formatarData(document.getElementById("dataFimBusca").value);
 
@@ -224,8 +286,9 @@ function filtrarTabela() {
         var dataInicio = row.querySelector("td:nth-child(5)").textContent.toLowerCase();
         var dataFim = row.querySelector("td:nth-child(6)").textContent.toLowerCase();
         var cliente = row.querySelector("td:nth-child(7)").textContent.toLowerCase();
-        var responsavel = row.querySelector("td:nth-child(8)").textContent.toLowerCase();
-        var prioridade = row.querySelector("td:nth-child(9)").textContent.toLowerCase();
+        var solicitante = row.querySelector("td:nth-child(8)").textContent.toLowerCase();
+        var responsavel = row.querySelector("td:nth-child(9)").textContent.toLowerCase();
+        var prioridade = row.querySelector("td:nth-child(10)").textContent.toLowerCase();
 
 
         var iniciadoMatch = iniciado.indexOf(iniciadoFilter) > -1 || iniciadoFilter === "";
@@ -234,11 +297,12 @@ function filtrarTabela() {
         var dataInicioMatch = dataInicio.indexOf(dataInicioFilter) > -1 || dataInicioFilter === "";
         var dataFimMatch = dataFim.indexOf(dataFimFilter) > -1 || dataFimFilter === "";
         var clienteMatch = cliente.indexOf(clienteFilter) > -1 || clienteFilter === "";
+        var solicitanteMatch = solicitante.indexOf(solicitanteFilter) > -1 || solicitanteFilter === "";
         var responsavelMatch = responsavel.indexOf(responsavelFilter) > -1 || responsavelFilter === "";
         var prioridadeMatch = prioridade.indexOf(prioridadeFilter) > -1 || prioridadeFilter === "";
 
 
-        if (iniciadoMatch && nomeMatch && statusMatch && dataInicioMatch && dataFimMatch && responsavelMatch && clienteMatch && prioridadeMatch) {
+        if (iniciadoMatch && nomeMatch && statusMatch && dataInicioMatch && dataFimMatch && responsavelMatch && clienteMatch && solicitanteMatch && prioridadeMatch) {
             row.style.display = "";
         } else {
             row.style.display = "none";

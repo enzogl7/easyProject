@@ -12,6 +12,7 @@
     <div class="text-start mb-2"><h1>Projetos</h1></div>
     <hr>
     <div class="text-end mb-2">
+      <button id="exportarExcel" class="btn btn-success"><i class="bi bi-file-earmark-arrow-down" style="padding-right: 2px; margin-right: 2px"></i>Exportar para Planilha</button>
       <a href="/projetos/novo" class="btn btn-primary">Criar Novo Projeto</a>
     </div>
 
@@ -57,12 +58,21 @@
           <option th:each="cliente : ${clientes}" th:text="${cliente.nome}" th:value="${cliente.nome}"></option>
         </select>
       </div>
+
       <div class="col-md-2 mb-3">
         <label for="iniciadoBusca">Iniciado</label>
         <select id="iniciadoBusca" class="form-control">
           <option value="">Todos</option>
           <option value="true">Sim</option>
           <option value="false">Não</option>
+        </select>
+      </div>
+
+      <div class="col-md-2 mb-3">
+        <label for="solicitanteBusca">Solicitante</label>
+        <select id="solicitanteBusca" class="form-control">
+          <option value="" selected>Selecione um solicitante</option>
+          <option th:each="solicitante : ${solicitantes}" th:text="${solicitante.nome}" th:value="${solicitante.nome}"></option>
         </select>
       </div>
 
@@ -112,7 +122,7 @@
         <td class="text-center" th:text="${projeto.dataInicio != null ? #temporals.format(projeto.dataInicio, 'dd/MM/yyyy') : '---'}"></td>
         <td class="text-center">
           <span th:text="${projeto.previsaoFim != null ? #temporals.format(projeto.previsaoFim, 'dd/MM/yyyy') : '---'}"></span>
-          <span th:if="${projeto.previsaoFim != null and projeto.previsaoFim.isBefore(#temporals.createNow().toLocalDate())}" class="badge bg-warning ms-2">Atrasado</span>
+          <span th:if="${projeto.previsaoFim != null and projeto.previsaoFim.isBefore(#temporals.createNow().toLocalDate())}" class="badge bg-warning ms-2 badge-atrasado">Atrasado</span>
         </td>
         <td class="text-center" th:text="${projeto.cliente.nome}"></td>
         <td class="text-center" th:text="${projeto.solicitante?.nome ?: 'Não atribuído'}"></td>

@@ -2,6 +2,26 @@ $(document).ready(function () {
     paginacaoTabela('tabelaClientes')
 });
 
+document.getElementById("nomeClienteBusca").addEventListener("keyup", filtrarTabela);
+
+function filtrarTabela() {
+    var nomeFilter = document.getElementById("nomeClienteBusca").value.toLowerCase();
+
+    var table = document.querySelector(".table");
+    var rows = table.querySelectorAll("tbody tr");
+
+    rows.forEach(function(row) {
+        var nome = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
+        var nomeMatch = nome.indexOf(nomeFilter) > -1 || nomeFilter === "";
+
+        if (nomeMatch) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    });
+}
+
 function criarCliente() {
     var nomeCliente = document.getElementById('nomeCliente').value;
     var descricaoCliente = document.getElementById('descricaoCliente').value;

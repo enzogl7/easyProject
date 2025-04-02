@@ -2,7 +2,13 @@
 <html lang="en">
 <head th:replace="~{fragments/links :: headContent('')}"></head>
 <title>Gráficos - EasyProjects</title>
-
+<style>
+  .custom-close {
+    width: 12px;
+    height: 12px;
+    padding: 0;
+  }
+</style>
 <body>
 <div th:replace="~{fragments/navbar :: navbar}" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"></div>
 
@@ -71,9 +77,9 @@
   <div class="row mt-4" id="graficosContainer">
     <div class="col-md-4 mb-4 grafico-card" id="cardProxFinalizacao">
       <div class="card">
-        <div class="card-header text-center">
-          Projetos próximos da data de previsão de finalização
-          <button class="btn-close" onclick="removerGrafico('cardProxFinalizacao')"></button>
+        <div class="card-header text-center d-flex justify-content-between align-items-center">
+          <span class="flex-grow-1">Projetos próximos da data de previsão de finalização</span>
+          <button class="btn-close custom-close" onclick="removerGrafico('cardProxFinalizacao')"></button>
         </div>
         <div class="card-body">
           <canvas id="graficoProxFinalizacao" height="250"></canvas>
@@ -83,9 +89,9 @@
 
     <div class="col-md-4 mb-4 grafico-card" id="cardStatus">
       <div class="card">
-        <div class="card-header text-center">
-          Projetos por status
-          <button class="btn-close" onclick="removerGrafico('cardStatus')"></button>
+        <div class="card-header text-center d-flex justify-content-between align-items-center">
+          <span class="flex-grow-1">Projetos por status</span>
+          <button class="btn-close custom-close" onclick="removerGrafico('cardStatus')"></button>
         </div>
         <div class="card-body">
           <canvas id="graficoStatus" height="250"></canvas>
@@ -95,9 +101,9 @@
 
     <div class="col-md-4 mb-4 grafico-card" id="cardPrioridade">
       <div class="card">
-        <div class="card-header text-center">
-          Projetos por prioridade
-          <button class="btn-close" onclick="removerGrafico('cardPrioridade')"></button>
+        <div class="card-header text-center d-flex justify-content-between align-items-center">
+          <span class="flex-grow-1">Projetos por prioridade</span>
+          <button class="btn-close custom-close" onclick="removerGrafico('cardPrioridade')"></button>
         </div>
         <div class="card-body">
           <canvas id="graficoPrioridade" height="250"></canvas>

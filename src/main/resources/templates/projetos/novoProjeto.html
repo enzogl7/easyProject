@@ -53,7 +53,6 @@
   <div class="mb-3">
     <label for="solicitanteProjeto" class="form-label">Solicitante</label>
     <select id="solicitanteProjeto" name="solicitanteProjeto" class="form-select" required>
-      <option value="nao atribuído">Não atribuído</option>
       <option th:each="solicitante : ${solicitantes}"
               th:value="${solicitante.id}" th:text="${solicitante.nome}"></option>
     </select>
