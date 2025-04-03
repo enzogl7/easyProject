@@ -175,12 +175,19 @@ public class ProjetosController {
             if (edicaoProjetoDTO.iniciadoProjeto()) {
                 projeto.setIniciado(true);
                 projeto.setDataInicio(LocalDate.parse(edicaoProjetoDTO.dataInicioProjeto()));
+            } else {
+                projeto.setIniciado(false);
+                projeto.setDataInicio(null);
+            }
+            if (edicaoProjetoDTO.responsavelProjeto() != "") {
+                projeto.setResponsavel(responsavelService.findById(Long.valueOf(edicaoProjetoDTO.responsavelProjeto())));
+            } else {
+                projeto.setResponsavel(null);
             }
             projeto.setNome(edicaoProjetoDTO.nomeProjeto());
             projeto.setDescricao(edicaoProjetoDTO.descricaoProjeto());
             projeto.setStatus(edicaoProjetoDTO.statusProjeto());
             projeto.setPrioridade(edicaoProjetoDTO.prioridadeProjeto());
-            projeto.setResponsavel(responsavelService.findById(Long.valueOf(edicaoProjetoDTO.responsavelProjeto())));
             projeto.setCliente(clienteService.findById(Long.valueOf(edicaoProjetoDTO.clienteProjeto())));
             projeto.setPrevisaoFim(LocalDate.parse(edicaoProjetoDTO.previsaoFimProjeto()));
             projeto.setDataAlteracao(LocalDate.now());

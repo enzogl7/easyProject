@@ -377,7 +377,7 @@ function salvarEdicaoProjeto() {
     var dataInicio = document.getElementById('dataInicioEdicao').value;
     var previsaoFim = document.getElementById('dataFimEdicao').value;
 
-    if (!nome || !descricao || !status || !prioridade || !responsavel || !clienteEdicaoProjeto || !previsaoFim) {
+    if (!nome || !descricao || !status || !prioridade || !clienteEdicaoProjeto || !previsaoFim) {
         Swal.fire({
             title: "Ops!",
             text: "Preencha todos os campos!",
