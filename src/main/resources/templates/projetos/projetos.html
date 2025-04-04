@@ -125,8 +125,20 @@
               </td>
               <td class="text-center">
                 <span th:text="${projeto.nome}"></span>
+                <div th:if="${projeto.statusProposta != null and projeto.statusProposta != 'Não Enviada'}">
+                  <span class="badge ms-2 text-dark bg-warning"
+                        th:if="${projeto.statusProposta != null and projeto.statusProposta.equalsIgnoreCase('pendente')}"
+                        th:text="'Proposta ' + ${projeto.statusProposta}"></span>
+
+                  <span class="badge ms-2 text-white bg-primary"
+                        th:if="${projeto.statusProposta != null and projeto.statusProposta.equalsIgnoreCase('enviada')}"
+                        th:text="'Proposta ' + ${projeto.statusProposta}"></span>
+
+                  <span class="badge ms-2 text-white bg-success"
+                        th:if="${projeto.statusProposta != null and projeto.statusProposta.equalsIgnoreCase('aprovada')}"
+                        th:text="'Proposta ' + ${projeto.statusProposta}"></span>
+                </div>
                 <span th:if="${#maps.containsKey(subtarefasPorProjeto, projeto.id) and #lists.size(subtarefasPorProjeto[projeto.id]) > 0}">
-                <br>
                 <span class="badge text-dark ms-2" style="cursor: pointer;"
                       th:classappend="${projetoTemAtraso[projeto.id]} ? 'bg-warning' : 'bg-info'"
                       th:text="'+' + ${#lists.size(subtarefasPorProjeto[projeto.id])} + ' subtarefa(s)' +

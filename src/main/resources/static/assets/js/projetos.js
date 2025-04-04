@@ -122,6 +122,7 @@ function criarProjeto() {
     formData.append("status", document.getElementById('status').value);
     formData.append("prioridade", document.getElementById('prioridade').value);
     formData.append("iniciado", document.getElementById('iniciado').checked);
+    formData.append("statusProposta", document.getElementById('statusProposta').value);
 
     var anexos = document.getElementById('anexos').files;
     for (var i = 0; i < anexos.length; i++) {
@@ -376,6 +377,7 @@ function salvarEdicaoProjeto() {
     var clienteEdicaoProjeto = document.getElementById('clienteEdicaoProjeto').value;
     var dataInicio = document.getElementById('dataInicioEdicao').value;
     var previsaoFim = document.getElementById('dataFimEdicao').value;
+    var statusPropostaProjeto = document.getElementById('statusPropostaEdicao').value;
 
     if (!nome || !descricao || !status || !prioridade || !clienteEdicaoProjeto || !previsaoFim) {
         Swal.fire({
@@ -402,6 +404,7 @@ function salvarEdicaoProjeto() {
             dataInicioProjeto: dataInicio,
             previsaoFimProjeto: previsaoFim,
             iniciadoProjeto: iniciadoProjeto,
+            statusPropostaProjeto: statusPropostaProjeto
         }),
         success: function() {
             Swal.fire({

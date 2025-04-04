@@ -7,6 +7,7 @@ import com.easyproject.ogl.repository.ProjetoAnexoRepository;
 import com.easyproject.ogl.services.*;
 import org.apache.tomcat.util.net.SSLUtilBase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -41,7 +42,8 @@ public class ProjetosController {
     private ResponsavelService responsavelService;
     @Autowired
     private ProjetoAnexoRepository projetoAnexoRepository;
-    private static final String DIRETORIO_UPLOAD = "/uploads/projetos/";
+    @Value("${app.upload.dir}")
+    private String diretorioUpload;
     @Autowired
     private SolicitanteService solicitanteService;
     @Autowired
@@ -106,6 +108,7 @@ public class ProjetosController {
                 responsavelService.findById(Long.valueOf(projetoData.responsavel())) : null);
         projeto.setStatus(projetoData.status());
         projeto.setPrioridade(projetoData.prioridade());
+        projeto.setStatusProposta(projetoData.statusProposta());
         projeto.setUsuario(userService.getUsuarioLogado());
         projetoService.salvar(projeto);
         salvarAnexosProjeto(projeto, projetoData.anexos());
@@ -138,7 +141,6 @@ public class ProjetosController {
     }
 
     private void salvarAnexosProjeto(Projeto projeto, List<MultipartFile> anexos) throws IOException {
-        String diretorioUpload = System.getProperty("user.dir") + "/uploads/projetos/";
         Files.createDirectories(Paths.get(diretorioUpload));
         List<ProjetoAnexo> listaAnexos = new ArrayList<>();
         for (MultipartFile anexo : anexos) {
@@ -204,6 +206,7 @@ public class ProjetosController {
             projeto.setCliente(clienteService.findById(Long.valueOf(edicaoProjetoDTO.clienteProjeto())));
             projeto.setPrevisaoFim(LocalDate.parse(edicaoProjetoDTO.previsaoFimProjeto()));
             projeto.setDataAlteracao(LocalDate.now());
+            projeto.setStatusProposta(edicaoProjetoDTO.statusPropostaProjeto());
             projetoService.salvar(projeto);
             return ResponseEntity.ok().build();
         } catch (Exception e) {

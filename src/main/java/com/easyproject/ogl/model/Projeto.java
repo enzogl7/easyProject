@@ -57,4 +57,5 @@ public class Projeto {
     @ManyToOne
     @JoinColumn(name = "solicitante")
     private Solicitante solicitante;
+    private String statusProposta;
 }
