@@ -5,7 +5,6 @@ $(document).ready(function () {
 document.addEventListener("DOMContentLoaded", function () {
     var hoje = new Date().toISOString().split('T')[0];
     document.getElementById("dataFim").value = hoje;
-    console.log("RODOU")
 
     const checkboxIniciado = document.getElementById("iniciado");
     const inputDataInicio = document.getElementById("dataInicio");
@@ -47,7 +46,6 @@ document.getElementById("limparFiltros").addEventListener("click", function() {
     document.getElementById("responsavelBusca").value = "";
     document.getElementById("iniciadoBusca").value = "";
     document.getElementById("solicitanteBusca").value = "";
-
     filtrarTabela();
 });
 
@@ -280,8 +278,8 @@ function filtrarTabela() {
     var responsavelFilter = document.getElementById("responsavelBusca").value.toLowerCase();
     var iniciadoFilter = document.getElementById("iniciadoBusca").value.toLowerCase();
     var solicitanteFilter = document.getElementById("solicitanteBusca").value.toLowerCase();
-    var dataInicioFilter = formatarData(document.getElementById("dataInicioBusca").value);
-    var dataFimFilter = formatarData(document.getElementById("dataFimBusca").value);
+    var dataInicioFilter = document.getElementById("dataInicioBusca").value ? formatarData(document.getElementById("dataInicioBusca").value) : "";
+    var dataFimFilter = document.getElementById("dataFimBusca").value ? formatarData(document.getElementById("dataFimBusca").value) : "";
 
     var table = document.querySelector(".table");
     var rows = table.querySelectorAll("tbody tr");
@@ -290,8 +288,8 @@ function filtrarTabela() {
         var iniciado = row.querySelector("td:nth-child(1)").textContent.toLowerCase();
         var nome = row.querySelector("td:nth-child(2)").textContent.toLowerCase();
         var status = row.querySelector("td:nth-child(4)").textContent.toLowerCase();
-        var dataInicio = row.querySelector("td:nth-child(5)").textContent.toLowerCase();
-        var dataFim = row.querySelector("td:nth-child(6)").textContent.toLowerCase();
+        var dataInicio = row.querySelector("td:nth-child(5)").textContent.trim();
+        var dataFim = row.querySelector("td:nth-child(6)").textContent.trim();
         var cliente = row.querySelector("td:nth-child(7)").textContent.toLowerCase();
         var solicitante = row.querySelector("td:nth-child(8)").textContent.toLowerCase();
         var responsavel = row.querySelector("td:nth-child(9)").textContent.toLowerCase();
@@ -501,4 +499,93 @@ function gerarBadgeData(dataString) {
         return `<span class="badge bg-success">Dentro do prazo</span>`;
     }
 }
+
+function adicionarAnexo(button) {
+    const projetoId = button.getAttribute("data-id-projeto");
+    const inputFile = document.getElementById("inputAnexo-" + projetoId);
+    inputFile.click();
+}
+
+function uploadAnexo(input) {
+    const projetoId = input.id.replace("inputAnexo-", "");
+    const file = input.files[0];
+
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("projetoId", projetoId);
+
+    $.ajax({
+        url: '/projetos/adicionaranexo',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function () {
+            Swal.fire({
+                title: "Sucesso!",
+                text: "Anexo adicionado com sucesso.",
+                icon: "success",
+                confirmButtonText: "OK"
+            }).then(() => {
+                location.reload()
+            });
+        },
+        error: function (xhr, status, error) {
+            Swal.fire({
+                title: "Ops!",
+                text: "Ocorreu um erro ao adicionar o anexo.",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+        }
+    });
+}
+
+function removerAnexo(button) {
+    var idAnexo = button.getAttribute('data-anexo-id');
+
+    Swal.fire({
+        icon: 'info',
+        title: 'Deseja excluir este anexo?',
+        showDenyButton: true,
+        confirmButtonText: 'Sim',
+        denyButtonText: 'Não',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/projetos/excluiranexo',
+                type: 'POST',
+                data: {
+                    idAnexo: idAnexo
+                },
+                complete: function(xhr, status) {
+                    switch (xhr.status) {
+                        case 200:
+                            Swal.fire({
+                                title: "Pronto!",
+                                text: "Excluído com sucesso!",
+                                icon: "success",
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                location.reload();
+                            });
+                            break;
+                        case 400:
+                            Swal.fire({
+                                title: "Erro",
+                                text: "Ocorreu um erro ao tentar excluir este anexo.",
+                                icon: "error",
+                                confirmButtonText: 'OK'
+                            });
+                        default:
+                            alert("Erro desconhecido: " + status);
+                    }
+                }
+            });
+        }
+    })
+}
+
 

@@ -5,6 +5,7 @@ import com.easyproject.ogl.dto.ProjetoDTO;
 import com.easyproject.ogl.model.*;
 import com.easyproject.ogl.repository.ProjetoAnexoRepository;
 import com.easyproject.ogl.services.*;
+import jakarta.annotation.PostConstruct;
 import org.apache.tomcat.util.net.SSLUtilBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +49,14 @@ public class ProjetosController {
     private SolicitanteService solicitanteService;
     @Autowired
     private SubtarefaService subtarefaService;
+    @Autowired
+    private ProjetoAnexoService projetoAnexoService;
+
+    @PostConstruct
+    public void init() {
+        Path path = Paths.get(diretorioUpload).toAbsolutePath().normalize();
+        diretorioUpload = path.toString();
+    }
 
     @ModelAttribute
     public void adicionarClientesEResponsaveisAoModel(Model model) {
@@ -157,11 +166,12 @@ public class ProjetosController {
                     projetoAnexo.setCaminhoArquivo(caminhoArquivo);
 
                     listaAnexos.add(projetoAnexo);
-                    projetoAnexoRepository.saveAll(listaAnexos);
-                } catch (IOException ignored) {
+                }catch (IOException ex) {
+                    ex.printStackTrace();
                 }
             }
         }
+        projetoAnexoRepository.saveAll(listaAnexos);
     }
 
     @GetMapping("/download/{id}")
@@ -211,6 +221,28 @@ public class ProjetosController {
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/adicionaranexo")
+    public ResponseEntity adicionarAnexo(@RequestParam("file") MultipartFile file,
+                                         @RequestParam("projetoId") Long projetoId) {
+        try {
+            Projeto projeto = projetoService.findById(projetoId);
+            salvarAnexosProjeto(projeto, Collections.singletonList(file));
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/excluiranexo")
+    public ResponseEntity excluirAnexo(@RequestParam("idAnexo")String idAnexo) {
+        try {
+            projetoAnexoService.excluirPorId(Long.valueOf(idAnexo));
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }

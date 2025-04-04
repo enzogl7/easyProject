@@ -10,4 +10,7 @@ public class ProjetoAnexoService {
     @Autowired
     private ProjetoAnexoRepository projetoAnexoRepository;
 
+    public void excluirPorId(Long id) {
+        projetoAnexoRepository.deleteById(id);
+    }
 }

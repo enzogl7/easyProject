@@ -167,11 +167,30 @@
                 <span th:if="${projeto.prioridade.toLowerCase() == 'alta'}" class="badge bg-danger">Alta</span>
               </td>
               <td class="text-center">
-              <span th:each="anexo : ${projeto.anexos}" class="me-2">
-                <a th:href="@{'/projetos/download/' + ${anexo.id}}" class="btn btn-sm btn-outline-primary">
-                  <i class="bi bi-download"></i>
-                </a>
-              </span>
+                <span th:each="anexo : ${projeto.anexos}" class="position-relative d-inline-block me-2">
+                  <span th:data-anexo-id="${anexo.id}" onclick="removerAnexo(this)"
+                        style="position: absolute; top: -6px; right: -6px; background: red; color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 12px; line-height: 16px; text-align: center; cursor: pointer; z-index: 10;"
+                        title="Remover anexo">
+                    &times;
+                  </span>
+                  <a th:href="@{'/projetos/download/' + ${anexo.id}}"
+                     class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-download"></i>
+                  </a>
+                </span>
+                <span th:if="${projeto.anexos == null or projeto.anexos.isEmpty()}" class="me-2">
+                  <button type="button"
+                          class="btn btn-sm btn-outline-success"
+                          title="Adicionar anexo"
+                          onclick="adicionarAnexo(this)"
+                          th:data-id-projeto="${projeto.id}">
+                    <i class="bi bi-plus"></i>
+                  </button>
+                  <input type="file"
+                         class="d-none"
+                         onchange="uploadAnexo(this)"
+                         th:id="'inputAnexo-' + ${projeto.id}">
+                </span>
               </td>
               <td class="text-center">
                 <div class="dropdown">
