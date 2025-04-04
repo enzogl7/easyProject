@@ -423,3 +423,79 @@ function salvarEdicaoProjeto() {
         }
     });
 }
+
+function ModalSubtarefas(button) {
+    var idProjeto = button.getAttribute('data-projeto');
+    const nomeProjeto = button.getAttribute('data-nome-projeto');
+    fetch(`/subtarefas/obtersubtarefasprojeto/${idProjeto}`)
+        .then(response => {
+            if (!response.ok) throw new Error('Erro ao carregar subtarefas');
+            return response.json();
+        })
+        .then(subtarefas => {
+            const modal = document.getElementById('modalSubtarefas');
+
+            const tituloModal = modal.querySelector('.modal-title');
+            tituloModal.textContent = 'Subtarefas do projeto ' + nomeProjeto;
+
+            const modalBody = modal.querySelector('.modal-body');
+            modalBody.innerHTML = '';
+
+            if (subtarefas.length === 0) {
+                modalBody.innerHTML = '<p>Este projeto não possui subtarefas.</p>';
+            } else {
+                subtarefas.forEach(sub => {
+                    const container = document.createElement('div');
+
+                    container.innerHTML = `
+                        <h5>${sub.nome}</h5>
+                        <p><strong>Entrega:</strong> ${formatarData(sub.dataEntrega)} ${gerarBadgeData(sub.dataEntrega)}</p>
+                        <p><strong>Status:</strong> ${sub.status || '---'}</p>
+                        <p><strong>Atribuído:</strong> ${sub.atribuido?.nome || '---'}</p>
+                        <hr>
+                     `;
+
+                    modalBody.appendChild(container);
+                });
+            }
+
+            const bootstrapModal = new bootstrap.Modal(modal);
+            bootstrapModal.show();
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Não foi possível carregar as subtarefas.');
+        });
+}
+
+function formatarData(dataISO) {
+    if (!dataISO) return '---';
+    const data = new Date(dataISO);
+    const dia = String(data.getDate()).padStart(2, '0');
+    const mes = String(data.getMonth() + 1).padStart(2, '0');
+    const ano = data.getFullYear();
+    return `${dia}/${mes}/${ano}`;
+}
+
+function gerarBadgeData(dataString) {
+    if (!dataString) return '';
+    const hoje = new Date();
+    const dataEntrega = new Date(dataString);
+
+    hoje.setHours(0, 0, 0, 0);
+    dataEntrega.setHours(0, 0, 0, 0);
+
+    const diffMs = dataEntrega - hoje;
+    const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffDias === 0) {
+        return `<span class="badge bg-primary">Hoje</span>`;
+    } else if (diffDias < 0) {
+        return `<span class="badge bg-danger">Atrasado</span>`;
+    } else if (diffDias <= 2) {
+        return `<span class="badge bg-warning">Próximo</span>`;
+    } else {
+        return `<span class="badge bg-success">Dentro do prazo</span>`;
+    }
+}
+

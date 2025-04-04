@@ -23,7 +23,7 @@ function criarSubtarefa() {
     var atribuidoASubtarefa = document.getElementById('atribuidoASubtarefa').value;
     var statusSubtarefa = document.getElementById('statusSubtarefa').value;
 
-    if (!nomeSubtarefa && !descricaoSubtarefa && !dataEntregaSubtarefa) {
+    if (!nomeSubtarefa || !descricaoSubtarefa || !dataEntregaSubtarefa) {
         Swal.fire({
             title: "Ops!",
             text: "Preencha todos os campos!",

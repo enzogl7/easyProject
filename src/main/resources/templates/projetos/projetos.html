@@ -123,12 +123,25 @@
                 <span th:if="${projeto.iniciado}" class="bi bi-check-circle-fill text-success"></span>
                 <span th:if="${not projeto.iniciado}" class="bi bi-x-circle-fill text-danger"></span>
               </td>
-              <td class="text-center" th:text="${projeto.nome}"></td>
+              <td class="text-center">
+                <span th:text="${projeto.nome}"></span>
+                <span th:if="${#maps.containsKey(subtarefasPorProjeto, projeto.id) and #lists.size(subtarefasPorProjeto[projeto.id]) > 0}">
+                <br>
+                <span class="badge bg-info text-dark ms-2"
+                      style="cursor:pointer"
+                      th:text="'+' + ${#lists.size(subtarefasPorProjeto[projeto.id])} + ' subtarefa(s)'"
+                      th:data-projeto="${projeto.id}"
+                      th:data-nome-projeto="${projeto.nome}"
+                      onclick="ModalSubtarefas(this)">
+                </span>
+              </span>
+              </td>
               <td class="text-center" th:text="${projeto.descricao}"></td>
               <td class="text-center" th:text="${projeto.status}"></td>
               <td class="text-center" th:text="${projeto.dataInicio != null ? #temporals.format(projeto.dataInicio, 'dd/MM/yyyy') : '---'}"></td>
               <td class="text-center">
                 <span th:text="${projeto.previsaoFim != null ? #temporals.format(projeto.previsaoFim, 'dd/MM/yyyy') : '---'}"></span>
+                <br>
                 <span th:if="${projeto.previsaoFim != null and projeto.previsaoFim.isBefore(#temporals.createNow().toLocalDate())}" class="badge bg-warning ms-2 badge-atrasado">Atrasado</span>
                 <span th:if="${projeto.previsaoFim != null and projeto.previsaoFim.isEqual(#temporals.createNow().toLocalDate())}" class="badge bg-danger ms-2 badge-hoje">Hoje</span>
               </td>
@@ -181,6 +194,7 @@
   </div>
 </div>
 <div th:replace="~{projetos/modal_editar_projeto}"></div>
+<div th:replace="~{projetos/modal_subtarefas_projeto}"></div>
 <div th:replace="~{fragments/scripts :: scriptsContent('/assets/js/projetos.js')}"></div>
 </body>
 </html>

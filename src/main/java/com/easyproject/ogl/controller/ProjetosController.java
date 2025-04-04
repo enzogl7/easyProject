@@ -25,9 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/projetos")
@@ -65,7 +63,14 @@ public class ProjetosController {
 
     @RequestMapping("/lista")
     public String projetosHome(Model model) {
-        model.addAttribute("projetos", projetoService.findAllByUsuario(userService.getUsuarioLogado()));
+        List<Projeto> projetos = projetoService.findAllByUsuario(userService.getUsuarioLogado());
+        Map<Long, List<Subtarefa>> subtarefasPorProjeto = new HashMap<>();
+        for (Projeto projeto : projetos) {
+            List<Subtarefa> subtarefas = subtarefaService.findAllByProjetoId(projeto);
+            subtarefasPorProjeto.put(projeto.getId(), subtarefas);
+        }
+        model.addAttribute("projetos", projetos);
+        model.addAttribute("subtarefasPorProjeto", subtarefasPorProjeto);
         return "/projetos/projetos";
     }
 

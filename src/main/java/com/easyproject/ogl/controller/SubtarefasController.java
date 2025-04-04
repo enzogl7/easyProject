@@ -1,6 +1,7 @@
 package com.easyproject.ogl.controller;
 
 import com.easyproject.ogl.dto.EdicaoSubtarefaDTO;
+import com.easyproject.ogl.dto.ResponsavelDTO;
 import com.easyproject.ogl.dto.SubtarefaDTO;
 import com.easyproject.ogl.model.Projeto;
 import com.easyproject.ogl.model.Subtarefa;
@@ -113,5 +114,12 @@ public class SubtarefasController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping("/subtarefas/obtersubtarefasprojeto/{idProjeto}")
+    @ResponseBody
+    public List<Subtarefa> buscarSubtarefasPorProjeto(@PathVariable Integer idProjeto) {
+        Projeto projeto = projetoService.findById(Long.valueOf(idProjeto));
+        return subtarefaService.findAllByProjetoId(projeto);
     }
 }
