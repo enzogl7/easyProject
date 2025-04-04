@@ -1,6 +1,7 @@
 # EasyProjects 🛠️
 
 O **EasyProjects** é uma aplicação web desenvolvida para facilitar o gerenciamento de projetos no ambiente corporativo. Com ele, você pode criar e gerenciar projetos, solicitantes, clientes, subtarefas e muito mais. Além disso, é possível visualizar gráficos e relatórios que ajudam a ter uma visão geral do andamento das atividades.
+<br>
 *Esse projeto está sendo constantemente atualizado, tendo em vista que existem usuários ativos rodando o projeto em suas máquinas locais através do Docker.
 
 ---
