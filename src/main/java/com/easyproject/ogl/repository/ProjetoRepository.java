@@ -24,7 +24,7 @@ public interface ProjetoRepository extends JpaRepository<Projeto, Integer> {
     @Query(value = "SELECT COUNT(p) FROM projetos p where p.status = 'Em andamento' and p.usuario = :idUsuario", nativeQuery = true)
     Long countProjetosEmAndamentoByUsuario(@Param("idUsuario") Long idUsuario);
 
-    @Query(value = "SELECT COUNT(p) FROM projetos p where p.status = 'Concluido' and p.usuario = :idUsuario", nativeQuery = true)
+    @Query(value = "SELECT COUNT(p) FROM projetos p where p.status = 'Concluído' and p.usuario = :idUsuario", nativeQuery = true)
     Long countProjetosConcluidosByUsuario(@Param("idUsuario") Long idUsuario);
 
     List<Projeto> findAllByCliente_Id(Long clienteId);
