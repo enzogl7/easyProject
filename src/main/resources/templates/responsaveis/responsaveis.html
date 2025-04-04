@@ -6,14 +6,15 @@
 <body class="bg-light">
 <div th:replace="~{fragments/navbar :: navbar}" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"></div>
 
-<div class="container-fluid mt-5 pt-1">
-
-  <div class="table-responsive mt-5">
-    <div class="text-start mb-2"><h1>Responsáveis</h1></div>
-    <hr>
-    <div class="text-end mb-2">
-      <a href="/responsaveis/novo" class="btn btn-primary">Criar Novo Cliente</a>
+<div class="container-fluid mt-5 pt-5" style="max-width: 95%">
+  <div class="card shadow-sm p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="mb-0">Responsáveis</h3>
+      <div class="text-end mb-2">
+        <a href="/responsaveis/novo" class="btn btn-primary btn-sm">Criar Novo Responsável</a>
+      </div>
     </div>
+    <hr>
 
     <div class="row w-100 px-2">
       <div class="col-md-3 mb-3">
@@ -21,27 +22,32 @@
         <input type="text" id="nomeResponsavelBusca" class="form-control" placeholder="Insira o nome do responsável">
       </div>
     </div>
+    <div class="card mt-4">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover w-100" id="tabelaResponsaveis">
+            <thead class="">
+            <tr>
+              <th class="text-center">Nome</th>
+              <th class="text-center">Projetos</th>
+              <th class="text-center">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="responsavel : ${responsaveis}">
+              <td class="text-center" th:text="${responsavel.nome}"></td>
+              <td class="text-center" th:text="---"></td> <!-- TODO: POPULAR !-->
 
-    <table class="table table-bordered table-striped table-hover w-100" id="tabelaResponsaveis">
-      <thead class="">
-      <tr>
-        <th class="text-center">Nome</th>
-        <th class="text-center">Projetos</th>
-        <th class="text-center">Ações</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="responsavel : ${responsaveis}">
-        <td class="text-center" th:text="${responsavel.nome}"></td>
-        <td class="text-center" th:text="---"></td> <!-- TODO: POPULAR !-->
-
-        <td class="text-center">
-          <button th:data-id="${responsavel.id}" th:data-nome-responsavel="${responsavel.nome}" onclick="modalEditarResponsavel(this)" class="btn btn-warning btn-sm">Editar</button>
-          <button th:data-id="${responsavel.id}" onclick="excluirResponsavel(this)" class="btn btn-danger btn-sm">Excluir</button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+              <td class="text-center">
+                <button th:data-id="${responsavel.id}" th:data-nome-responsavel="${responsavel.nome}" onclick="modalEditarResponsavel(this)" class="btn btn-warning btn-sm">Editar</button>
+                <button th:data-id="${responsavel.id}" onclick="excluirResponsavel(this)" class="btn btn-danger btn-sm">Excluir</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <div th:replace="~{responsaveis/modal_editar_responsavel}"></div>

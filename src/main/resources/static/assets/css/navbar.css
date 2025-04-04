@@ -13,8 +13,8 @@ nav {
     width: 100%;
     display: flex;
     align-items: center;
-    background-color: #f8f6f6;
-    box-shadow: 0 0 1px rgba(0,0,0,0.1);
+    background-color: #1e1e2d;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
     z-index: 1030;
 }
 nav .logo {
@@ -24,13 +24,13 @@ nav .logo {
 }
 
 .logo .menu-icon {
-    color: #333;
+    color: #ffffff;
     font-size: 24px;
     margin-right: 14px;
     cursor: pointer;
 }
 .logo .nome-logo {
-    color: #333;
+    color: #ffffff;
     font-size: 22px;
     font-weight: 500;
 }
@@ -41,7 +41,7 @@ nav .sidebar {
     height: 100%;
     width: 260px;
     padding: 20px 0;
-    background-color: #fff;
+    background-color: #1e1e2d;
     box-shadow: 0 5px 10px rgba(0,0,0,0.1);
     transition: all 0.3s ease;
     z-index: 1050 !important;
@@ -71,19 +71,19 @@ nav.open .sidebar {
 }
 
 .nav-link:hover {
-    background-color: #707070;
+    background-color: #b8b8b8;
     transition: all 0.3s ease;
 }
 
 .nav-link .icon{
     margin-right: 14px;
     font-size: 20px;
-    color: #707070;
+    color: white;
 }
 
 .nav-link .link {
     font-size: 16px;
-    color: #707070;
+    color: white;
     font-weight: 400;
 
 }

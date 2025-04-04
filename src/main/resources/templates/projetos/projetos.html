@@ -6,167 +6,178 @@
 <body class="bg-light">
 <div th:replace="~{fragments/navbar :: navbar}" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"></div>
 
-<div class="container-fluid mt-5 pt-1">
-
-  <div class="table-responsive mt-5">
-    <div class="text-start mb-2"><h1>Projetos</h1></div>
+<div class="container mt-5 pt-5" style="max-width: 95%">
+  <div class="card shadow-sm p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="mb-0">Projetos</h3>
+      <div>
+        <button id="exportarExcel" class="btn btn-success me-2 btn-sm">
+          <i class="bi bi-file-earmark-arrow-down me-1"></i>Exportar para Planilha
+        </button>
+        <a href="/projetos/novo" class="btn btn-primary btn-sm">Criar Novo Projeto</a>
+      </div>
+    </div>
     <hr>
-    <div class="text-end mb-2">
-      <button id="exportarExcel" class="btn btn-success"><i class="bi bi-file-earmark-arrow-down" style="padding-right: 2px; margin-right: 2px"></i>Exportar para Planilha</button>
-      <a href="/projetos/novo" class="btn btn-primary">Criar Novo Projeto</a>
-    </div>
 
-    <div class="row w-100 px-2">
-      <div class="col-md-2 mb-3">
-        <label for="nome">Nome</label>
-        <input type="text" id="nome" class="form-control" placeholder="Insira o nome do projeto">
-      </div>
-
-      <div class="col-md-2 mb-3">
-        <label for="statusBusca">Status</label>
-        <select id="statusBusca" class="form-control">
-          <option value="" selected>Selecione um status</option>
-          <option value="Pendente">Pendente</option>
-          <option value="Em andamento">Em andamento</option>
-          <option value="Concluído">Concluído</option>
-        </select>
-      </div>
-
-      <div class="col-md-2 mb-3">
-        <label for="prioridadeBusca">Prioridade</label>
-        <select id="prioridadeBusca" class="form-control">
-          <option value="" selected>Selecione uma prioridade</option>
-          <option value="Baixa">Baixo</option>
-          <option value="Média">Média</option>
-          <option value="Alta">Alta</option>
-        </select>
-      </div>
-
-      <div class="col-md-2 mb-3">
-        <label for="responsavelBusca">Responsável</label>
-        <select id="responsavelBusca" class="form-control">
-          <option value="" selected>Selecione um responsável</option>
-          <option value="Não atribuído">Não atribuído</option>
-          <option th:each="responsavel : ${responsaveis}" th:text="${responsavel.nome}" th:value="${responsavel.nome}"></option>
-        </select>
-      </div>
-
-      <div class="col-md-2 mb-3">
-        <label for="clienteBusca">Cliente</label>
-        <select id="clienteBusca" class="form-control">
-          <option value="" selected>Selecione um cliente</option>
-          <option th:each="cliente : ${clientes}" th:text="${cliente.nome}" th:value="${cliente.nome}"></option>
-        </select>
-      </div>
-
-      <div class="col-md-2 mb-3">
-        <label for="iniciadoBusca">Iniciado</label>
-        <select id="iniciadoBusca" class="form-control">
-          <option value="">Todos</option>
-          <option value="true">Sim</option>
-          <option value="false">Não</option>
-        </select>
-      </div>
-
-      <div class="col-md-2 mb-3">
-        <label for="solicitanteBusca">Solicitante</label>
-        <select id="solicitanteBusca" class="form-control">
-          <option value="" selected>Selecione um solicitante</option>
-          <option th:each="solicitante : ${solicitantes}" th:text="${solicitante.nome}" th:value="${solicitante.nome}"></option>
-        </select>
-      </div>
-
-      <div class="col-md-4 mb-3 d-flex gap-2">
-        <div class="w-50">
-          <label for="dataInicioBusca">Data Início</label>
-          <input type="date" id="dataInicioBusca" class="form-control">
-        </div>
-        <div class="w-50">
-          <label for="dataFimBusca">Data Fim</label>
-          <input type="date" id="dataFimBusca" class="form-control">
-        </div>
-      </div>
-
-      <div class="col-md-1 mb-3 d-flex align-items-end">
-        <button id="limparFiltros" class="btn btn-secondary btn-sm">Limpar Filtros</button>
-      </div>
-    </div>
-
-    <table class="table table-bordered table-striped no-footer table-hover w-100" id="tabelaProjetos">
-      <thead>
-      <tr>
-        <th class="text-center" style="width: 5%;">Status</th>
-        <th class="text-center">Nome</th>
-        <th class="text-center" style="width: 20%;">Descrição</th>
-        <th class="text-center">Status</th>
-        <th class="text-center">Data início</th>
-        <th class="text-center" style="width: 10%;">Data prev. finalização</th>
-        <th class="text-center">Cliente</th>
-        <th class="text-center">Solicitante</th>
-        <th class="text-center">Atribuído à</th>
-        <th class="text-center">Prioridade</th>
-        <th class="text-center">Anexo</th>
-        <th class="text-center">Ações</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="projeto : ${projetos}">
-        <td class="text-center">
-          <span th:text="${projeto.iniciado}" class="d-none"></span>
-          <span th:if="${projeto.iniciado}" class="bi bi-check-circle-fill text-success"></span>
-          <span th:if="${not projeto.iniciado}" class="bi bi-x-circle-fill text-danger"></span>
-        </td>
-        <td class="text-center" th:text="${projeto.nome}"></td>
-        <td class="text-center" th:text="${projeto.descricao}"></td>
-        <td class="text-center" th:text="${projeto.status}"></td>
-        <td class="text-center" th:text="${projeto.dataInicio != null ? #temporals.format(projeto.dataInicio, 'dd/MM/yyyy') : '---'}"></td>
-        <td class="text-center">
-          <span th:text="${projeto.previsaoFim != null ? #temporals.format(projeto.previsaoFim, 'dd/MM/yyyy') : '---'}"></span>
-          <span th:if="${projeto.previsaoFim != null and projeto.previsaoFim.isBefore(#temporals.createNow().toLocalDate())}" class="badge bg-warning ms-2 badge-atrasado">Atrasado</span>
-          <span th:if="${projeto.previsaoFim != null and projeto.previsaoFim.isEqual(#temporals.createNow().toLocalDate())}" class="badge bg-danger ms-2 badge-hoje">Hoje</span>
-        </td>
-        <td class="text-center" th:text="${projeto.cliente.nome}"></td>
-        <td class="text-center" th:text="${projeto.solicitante?.nome ?: 'Não atribuído'}"></td>
-        <td class="text-center" th:text="${projeto.responsavel?.nome ?: 'Não atribuído'}"></td>
-        <td class="text-center">
-          <span th:if="${projeto.prioridade.toLowerCase() == 'baixa'}" class="badge bg-secondary">Baixa</span>
-          <span th:if="${projeto.prioridade.toLowerCase() == 'média'}" class="badge bg-primary">Média</span>
-          <span th:if="${projeto.prioridade.toLowerCase() == 'alta'}" class="badge bg-danger">Alta</span>
-        </td>
-        <td class="text-center">
-          <span th:each="anexo : ${projeto.anexos}" class="me-2">
-              <a th:href="@{'/projetos/download/' + ${anexo.id}}" class="btn btn-sm btn-outline-primary">
-                  <i class="bi bi-download"></i>
-              </a>
-          </span>
-        </td>
-        <td class="text-center">
-          <div class="dropdown">
-            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Ações</button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li>
-                <a class="dropdown-item" th:if="${!projeto.iniciado}" th:data-id="${projeto.id}" onclick="iniciarProjeto(this)">Iniciar Projeto</a>
-              </li>
-              <li>
-                <a class="dropdown-item" th:data-id="${projeto.id}" onclick="modalComentario(this)">Adicionar comentário</a>
-              </li>
-              <li>
-                <a class="dropdown-item"
-                   th:data-iniciado="${projeto.iniciado}" th:data-id="${projeto.id}" th:data-nome="${projeto.nome}" th:data-descricao="${projeto.descricao}"
-                   th:data-status="${projeto.status}" th:data-inicio="${projeto.dataInicio}" th:data-fim="${projeto.previsaoFim}"
-                   th:data-cliente="${projeto.cliente.id}" th:data-responsavel="${projeto.responsavel?.id ?: ''}" th:data-prioridade="${projeto.prioridade}"
-                   onclick="modalEditarProjeto(this)">Editar</a>
-              </li>
-              <li>
-                <a class="dropdown-item" th:data-id="${projeto.id}" onclick="excluirProjeto(this)">Excluir</a>
-              </li>
-            </ul>
+    <div class="row">
+          <div class="col-md-2 mb-3">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" class="form-control" placeholder="Insira o nome do projeto">
           </div>
-        </td>
 
-      </tr>
-      </tbody>
-    </table>
+          <div class="col-md-2 mb-3">
+            <label for="statusBusca">Status</label>
+            <select id="statusBusca" class="form-control">
+              <option value="" selected>Selecione um status</option>
+              <option value="Pendente">Pendente</option>
+              <option value="Em andamento">Em andamento</option>
+              <option value="Concluído">Concluído</option>
+            </select>
+          </div>
+
+          <div class="col-md-2 mb-3">
+            <label for="prioridadeBusca">Prioridade</label>
+            <select id="prioridadeBusca" class="form-control">
+              <option value="" selected>Selecione uma prioridade</option>
+              <option value="Baixa">Baixo</option>
+              <option value="Média">Média</option>
+              <option value="Alta">Alta</option>
+            </select>
+          </div>
+
+          <div class="col-md-2 mb-3">
+            <label for="responsavelBusca">Responsável</label>
+            <select id="responsavelBusca" class="form-control">
+              <option value="" selected>Selecione um responsável</option>
+              <option value="Não atribuído">Não atribuído</option>
+              <option th:each="responsavel : ${responsaveis}" th:text="${responsavel.nome}" th:value="${responsavel.nome}"></option>
+            </select>
+          </div>
+
+          <div class="col-md-2 mb-3">
+            <label for="clienteBusca">Cliente</label>
+            <select id="clienteBusca" class="form-control">
+              <option value="" selected>Selecione um cliente</option>
+              <option th:each="cliente : ${clientes}" th:text="${cliente.nome}" th:value="${cliente.nome}"></option>
+            </select>
+          </div>
+
+          <div class="col-md-2 mb-3">
+            <label for="iniciadoBusca">Iniciado</label>
+            <select id="iniciadoBusca" class="form-control">
+              <option value="">Todos</option>
+              <option value="true">Sim</option>
+              <option value="false">Não</option>
+            </select>
+          </div>
+
+          <div class="col-md-2 mb-3">
+            <label for="solicitanteBusca">Solicitante</label>
+            <select id="solicitanteBusca" class="form-control">
+              <option value="" selected>Selecione um solicitante</option>
+              <option th:each="solicitante : ${solicitantes}" th:text="${solicitante.nome}" th:value="${solicitante.nome}"></option>
+            </select>
+          </div>
+
+          <div class="col-md-4 mb-3 d-flex gap-2">
+            <div class="w-50">
+              <label for="dataInicioBusca">Data Início</label>
+              <input type="date" id="dataInicioBusca" class="form-control">
+            </div>
+            <div class="w-50">
+              <label for="dataFimBusca">Data Fim</label>
+              <input type="date" id="dataFimBusca" class="form-control">
+            </div>
+          </div>
+
+          <div class="col-md-1 mb-3 d-flex align-items-end">
+            <button id="limparFiltros" class="btn btn-secondary btn-md w-100">Limpar</button>
+          </div>
+    </div>
+
+
+    <div class="card mt-4">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped no-footer table-hover align-middle" id="tabelaProjetos">
+            <thead>
+            <tr>
+              <th class="text-center" style="width: 5%;font-size: 0.9rem">Status</th>
+              <th class="text-center" style="font-size: 0.9rem">Nome</th>
+              <th class="text-center" style="width: 20%;font-size: 0.9rem">Descrição</th>
+              <th class="text-center" style="font-size: 0.9rem">Status</th>
+              <th class="text-center" style="font-size: 0.9rem">Data início</th>
+              <th class="text-center" style="width: 10%;font-size: 0.9rem">Data prev. finalização</th>
+              <th class="text-center" style="font-size: 0.9rem">Cliente</th>
+              <th class="text-center" style="font-size: 0.9rem">Solicitante</th>
+              <th class="text-center" style="font-size: 0.9rem">Atribuído à</th>
+              <th class="text-center" style="font-size: 0.9rem">Prioridade</th>
+              <th class="text-center" style="font-size: 0.9rem">Anexo</th>
+              <th class="text-center" style="font-size: 0.9rem">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="projeto : ${projetos}">
+              <td class="text-center">
+                <span th:text="${projeto.iniciado}" class="d-none"></span>
+                <span th:if="${projeto.iniciado}" class="bi bi-check-circle-fill text-success"></span>
+                <span th:if="${not projeto.iniciado}" class="bi bi-x-circle-fill text-danger"></span>
+              </td>
+              <td class="text-center" th:text="${projeto.nome}"></td>
+              <td class="text-center" th:text="${projeto.descricao}"></td>
+              <td class="text-center" th:text="${projeto.status}"></td>
+              <td class="text-center" th:text="${projeto.dataInicio != null ? #temporals.format(projeto.dataInicio, 'dd/MM/yyyy') : '---'}"></td>
+              <td class="text-center">
+                <span th:text="${projeto.previsaoFim != null ? #temporals.format(projeto.previsaoFim, 'dd/MM/yyyy') : '---'}"></span>
+                <span th:if="${projeto.previsaoFim != null and projeto.previsaoFim.isBefore(#temporals.createNow().toLocalDate())}" class="badge bg-warning ms-2 badge-atrasado">Atrasado</span>
+                <span th:if="${projeto.previsaoFim != null and projeto.previsaoFim.isEqual(#temporals.createNow().toLocalDate())}" class="badge bg-danger ms-2 badge-hoje">Hoje</span>
+              </td>
+              <td class="text-center" th:text="${projeto.cliente.nome}"></td>
+              <td class="text-center" th:text="${projeto.solicitante?.nome ?: 'Não atribuído'}"></td>
+              <td class="text-center" th:text="${projeto.responsavel?.nome ?: 'Não atribuído'}"></td>
+              <td class="text-center">
+                <span th:if="${projeto.prioridade.toLowerCase() == 'baixa'}" class="badge bg-secondary">Baixa</span>
+                <span th:if="${projeto.prioridade.toLowerCase() == 'média'}" class="badge bg-primary">Média</span>
+                <span th:if="${projeto.prioridade.toLowerCase() == 'alta'}" class="badge bg-danger">Alta</span>
+              </td>
+              <td class="text-center">
+              <span th:each="anexo : ${projeto.anexos}" class="me-2">
+                <a th:href="@{'/projetos/download/' + ${anexo.id}}" class="btn btn-sm btn-outline-primary">
+                  <i class="bi bi-download"></i>
+                </a>
+              </span>
+              </td>
+              <td class="text-center">
+                <div class="dropdown">
+                  <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Ações</button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li>
+                      <a class="dropdown-item" th:if="${!projeto.iniciado}" th:data-id="${projeto.id}" onclick="iniciarProjeto(this)">Iniciar Projeto</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" th:data-id="${projeto.id}" onclick="modalComentario(this)">Adicionar comentário</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item"
+                         th:data-iniciado="${projeto.iniciado}" th:data-id="${projeto.id}" th:data-nome="${projeto.nome}" th:data-descricao="${projeto.descricao}"
+                         th:data-status="${projeto.status}" th:data-inicio="${projeto.dataInicio}" th:data-fim="${projeto.previsaoFim}"
+                         th:data-cliente="${projeto.cliente.id}" th:data-responsavel="${projeto.responsavel?.id ?: ''}" th:data-prioridade="${projeto.prioridade}"
+                         onclick="modalEditarProjeto(this)">Editar</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-item" th:data-id="${projeto.id}" onclick="excluirProjeto(this)">Excluir</a>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </div>
 <div th:replace="~{projetos/modal_editar_projeto}"></div>

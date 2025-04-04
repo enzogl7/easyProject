@@ -1,4 +1,7 @@
 document.getElementById("nomeResponsavelBusca").addEventListener("keyup", filtrarTabela);
+$(document).ready(function () {
+    paginacaoTabela('tabelaResponsaveis')
+});
 
 function filtrarTabela() {
     var nomeFilter = document.getElementById("nomeResponsavelBusca").value.toLowerCase();
