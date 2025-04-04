@@ -65,14 +65,22 @@ public class ProjetosController {
     public String projetosHome(Model model) {
         List<Projeto> projetos = projetoService.findAllByUsuario(userService.getUsuarioLogado());
         Map<Long, List<Subtarefa>> subtarefasPorProjeto = new HashMap<>();
+        Map<Long, Boolean> projetoTemAtraso = new HashMap<>();
+
         for (Projeto projeto : projetos) {
             List<Subtarefa> subtarefas = subtarefaService.findAllByProjetoId(projeto);
             subtarefasPorProjeto.put(projeto.getId(), subtarefas);
+            boolean temAtraso = subtarefas.stream()
+                    .anyMatch(s -> s.getDataEntrega() != null && s.getDataEntrega().isBefore(LocalDate.now()));
+            projetoTemAtraso.put(projeto.getId(), temAtraso);
         }
+
         model.addAttribute("projetos", projetos);
         model.addAttribute("subtarefasPorProjeto", subtarefasPorProjeto);
+        model.addAttribute("projetoTemAtraso", projetoTemAtraso);
         return "/projetos/projetos";
     }
+
 
     @RequestMapping("/novo")
     public String novoProjeto() {

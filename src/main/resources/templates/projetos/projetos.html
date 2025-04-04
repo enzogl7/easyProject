@@ -127,9 +127,10 @@
                 <span th:text="${projeto.nome}"></span>
                 <span th:if="${#maps.containsKey(subtarefasPorProjeto, projeto.id) and #lists.size(subtarefasPorProjeto[projeto.id]) > 0}">
                 <br>
-                <span class="badge bg-info text-dark ms-2"
-                      style="cursor:pointer"
-                      th:text="'+' + ${#lists.size(subtarefasPorProjeto[projeto.id])} + ' subtarefa(s)'"
+                <span class="badge text-dark ms-2" style="cursor: pointer;"
+                      th:classappend="${projetoTemAtraso[projeto.id]} ? 'bg-warning' : 'bg-info'"
+                      th:text="'+' + ${#lists.size(subtarefasPorProjeto[projeto.id])} + ' subtarefa(s)' +
+                               (${projetoTemAtraso[projeto.id]} ? ' (com atrasos)' : '')"
                       th:data-projeto="${projeto.id}"
                       th:data-nome-projeto="${projeto.nome}"
                       onclick="ModalSubtarefas(this)">
