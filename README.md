@@ -34,9 +34,10 @@ O **EasyProjects** é uma aplicação web desenvolvida para facilitar o gerencia
 ---
 
 ## Screenshots
-<p float="left">
-  <img src="screenshots/login.jpeg" width="300" />
-  <img src="screenshots/home.jpeg" width="300" />
-  <img src="screenshots/projetos.png" width="300" />
-</p>
+![Tela de login](screenshots/login.jpeg)
+![Dashboard](screenshots/home.jpeg)
+![Projetos](screenshots/projetos.jpeg)
+![Subtarefas](screenshots/subtarefas.jpeg)
+![Gráficos](screenshots/graficos.jpeg)
+
 
