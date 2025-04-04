@@ -30,3 +30,9 @@ O **EasyProjects** é uma aplicação web desenvolvida para facilitar o gerencia
 | Bootstrap        | Framework para design responsivo               |
 | JavaScript       | Comportamentos dinâmicos no frontend           |
 | Docker           | Containerização e facilidade de deploy         |
+
+---
+
+## Screenshots
+![Tela de login](screenshots/login.png)
+![Dashboard](screenshots/home.png)
