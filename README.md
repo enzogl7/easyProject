@@ -15,7 +15,6 @@ O **EasyProjects** é uma aplicação web desenvolvida para facilitar o gerencia
 - ✅ Visualização de **gráficos** e relatórios
 - ✅ Backend robusto com **Java + Spring Boot**
 - ✅ Banco de dados **PostgreSQL**
-- ✅ Disponível para uso via **Docker**
 
 ---
 
