@@ -2,7 +2,7 @@
 
 O **EasyProjects** é uma aplicação web desenvolvida para facilitar o gerenciamento de projetos no ambiente corporativo. Com ele, você pode criar e gerenciar projetos, solicitantes, clientes, subtarefas e muito mais. Além disso, é possível visualizar gráficos e relatórios que ajudam a ter uma visão geral do andamento das atividades.
 <br>
-A ideia do projeto surgiu a partir de uma dificuldade enfrentada no dia a dia de trabalho do meu pai. Ao tentar utilizar ferramentas como Monday, ClickUp, entre outras, ele frequentemente esbarrava na complexidade de configuração de todos os parâmetros necessários para a gestão de seus projetos, além dos altos custos dessas plataformas para um controle mais avançado — o que, geralmente, não compensa para uso pessoal. Diante disso, criei o EasyProjects, que segue em constante atualização e funcionamento com base no feedback que recebo.
+<p>A ideia do projeto surgiu a partir de uma dificuldade enfrentada no dia a dia de trabalho do meu pai. Ao tentar utilizar ferramentas como Monday, ClickUp, entre outras, ele frequentemente esbarrava na complexidade de configuração de todos os parâmetros necessários para a gestão de seus projetos, além dos altos custos dessas plataformas para um controle mais avançado — o que, geralmente, não compensa para uso pessoal. Diante disso, criei o EasyProjects, que segue em constante atualização e funcionamento com base no feedback que recebo.</p>
 ---
 
 ## Funcionalidades
