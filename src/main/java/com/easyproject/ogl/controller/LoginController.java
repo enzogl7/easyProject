@@ -33,12 +33,12 @@ public class LoginController {
 
     @GetMapping("/login")
     public String loginPage() {
-        return "login";
+        return "/login";
     }
 
     @GetMapping("/cadastro")
     public String registerPage() {
-        return "cadastro";
+        return "/cadastro";
     }
 
     @PostMapping("/logar")
