@@ -17,7 +17,7 @@ public class HomeController {
     @GetMapping("/dashboard")
     public String homePage(Model model) {
         model.addAttribute("usuario", userService.getUsuarioLogado());
-        return "home/dashboard";
+        return "/home/dashboard";
     }
 
 }
